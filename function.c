@@ -1,0 +1,10 @@
+    randomCard_maker();
+    card_printer();
+    round_counter();
+    visible();
+    get_move();
+    EndOfgame_check();
+    odd_round();
+    even_round();
+    map_printer();
+    map_loader();
