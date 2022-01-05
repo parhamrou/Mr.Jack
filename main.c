@@ -4,7 +4,6 @@
 #include <math.h>
 #include "function.h"
 int main(){
-    map_loader();
     
     return 0;
 }

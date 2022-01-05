@@ -3,7 +3,7 @@
         struct character *next;
     }character;
     typedef struct place{
-        int place_type; // 0.empty   1.light   2.house   3.pit   4.addition place   5.gate
+        int place_type; // 0.empty   1.on light   2.off light  3.house   4.open pit   5. close pit   6.addition place    7.gate
         character *head; // This pointer holds characters that are in that palce; 
     }place;
     // characters:
@@ -106,6 +106,24 @@
                 fscanf(fp, "%d", &map[i][j].place_type);
             }
         }
+        
         fclose(fp);
+        return 0;
     }
-    
+    void menu(){
+        // This function just prints the menu;
+        printf("           MR.JACK        \n");
+        printf("1.play with a friend\n");
+        printf("0.close the game\n");
+    }
+    void get_choice(int choice){
+        // this funtion gets the choice of user in the menu and calls the proper function;
+        if(choice == 1){
+            system("cls");
+            game();
+        }
+    }
+    int game(){
+        // I have to print the map and the round counter first;
+        
+    }
