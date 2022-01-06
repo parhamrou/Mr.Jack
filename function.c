@@ -11,6 +11,5 @@ odd_round();
 EndOfgame_check();
 visible();
 get_move();
-round_counter();
 card_printer();
 randomCard_maker();
