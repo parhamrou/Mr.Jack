@@ -4,6 +4,7 @@ int game();
 void get_choice;
 void menu();
 int map_loader();
+void first_place_set();
 map_printer();
 even_round();
 odd_round();

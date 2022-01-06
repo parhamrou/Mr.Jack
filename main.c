@@ -5,6 +5,5 @@
 #include <math.h>
 #include "function.h"
 int main(){
-    prepare_game();
     return 0;
 }
