@@ -1,15 +1,2 @@
-void character_maker_1();
-character* character_maker_2(char string[]);
-int game();
-void get_choice;
-void menu();
+void card_picker(int card_number, int i);
 int map_loader();
-void first_place_set();
-map_printer();
-even_round();
-odd_round();
-EndOfgame_check();
-visible();
-get_move();
-card_printer();
-randomCard_maker();

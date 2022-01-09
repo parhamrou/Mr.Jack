@@ -1,24 +1,33 @@
-//...................characters' node..................
-
-typedef struct character{
-    char name[20]; // character name;
-    struct character *next;
-}character;
-
 //...................palces' struct.....................
 
 typedef struct place{
-    int place_type;  // 0.empty    1.on light    2.off light   3.house    4.open pit    5. close pit    6.addition place     7.gate
-    character *head; // This pointer holds characters that are in that palce; 
+    int place_type;  // 0.empty    1.on light    2.off light   3.house    4.open manhole    5. close manhole    6.addition place     7.gate   
+    int character;   // // 0:SERGENT GOODLEY     1:INSPECTEUR LESTRADE     2:SIR WILLIAM GULL       3:SHERLOCK HOLMES
+                    // 4:JEREMY BERT         5:JOHN H. WATSON           6:MISS STEALTHY            7:JOHN SMITH
 }place;
-//...............global defined characters..............
+//...................characters' node....................
 
-character *JW, *IL, *WG, *JS, *SH, *JB, *MS, *SG;
+typedef struct card{
+    int name; // number that is assigned to chaaracter;
+    struct card *next;
+}card;
+
+//..................Enumerations........................
+
+enum persons {SG, IL, WG, SH, JB, JW, MS, JS};
+enum condition {empty, light_on, light_off, house, open, close, addition, gate};
+
+//..................heads of two linked lists............
+
+card *squad_head = NULL;
+card *even_round_head = NULL;
+card *odd_round_head = NULL;
 
 //.................global variables.....................
 
-int round_counter = 0; // goes until it reaches to 8;
-int turn_counter = 0; // counts turns at each round; 
+int round_counter = 1; // goes until it reaches to 8;
+int turn_counter = 0; // counts turns at each round;
+bool visible_condition = true;
 //..........two-dimensional array for places............
 
 place map[13][9];
@@ -26,43 +35,21 @@ place map[13][9];
 
 void prepare_game(){ // This function should be called at the first of the game;
     map_loader();
-    character_maker_1();
     first_place_set();
+    initial_linkedlist(); // unshuffled cards;
 }
-randomCard_maker(){
-    // This function makes 4 random numbers at the begining of odd rounds and saves 4 other cards for next round;
-    // 1:SERGENT GOODLEY     2:INSPECTEUR LESTRADE     3:SIR WILLIAM GULL       4:SHERLOCK HOLMES
-    // 5:JEREMY BERT         6:JOHN H. WATSON           7:MISS STEALTHY            8:JOHN SMITH
-    srand(time (NULL));
-    int card1, card2, card3, card4, temp;
-    int numbers[8] = {1, 2, 3, 4, 5, 6, 7, 8};
-    card1 = rand() % 8 + 1;
-    do{
-        temp = rand() % 8 + 1;
-        if(temp != card1){
-            card2 = temp;
+void randomCard_maker(){ // this function generates random cards;
+    srand(time(NULL));
+    for(int i = 8; i > -1; i--){
+        int random_number = rand() % i;
+        card_picker(random_number, i);
+        if(i == 5){
             break;
         }
-    }while(temp == card1);
-    do{
-        temp = rand() % 8 + 1;
-        if(temp != card1 && temp != card2){
-            card3 = temp;
-            break;
-        }
-    }while(temp == card1 || temp == card2);
-    do{
-        temp = rand() % 8 + 1;
-        if(temp != card1 && temp != card2 && temp != card3){
-            card4 = temp;
-            break;
-        }
-    }while(temp == card1 || temp == card2 || temp == card3);
+    }
+    odd_round_head = squad_head; // set second linkedlist to four baghi cards;
 }
-void odd_round_card_printer(){
-
-}
-card_printer(){
+void card_printer(){
     // This function prints the abilities of each character;
 }
 visible(){
@@ -77,8 +64,8 @@ EndOfgame_check(){
 odd_round(){
     // This function is four odd rounds and calls other functions. first is inspector's turn , then two times Mr.Jack and then again inspector;
 }
-even_round(){
-    // This function is for even rounds and calls other functions. first is Mr.Jack's turn, then two times inspector and the again Mr.Jack;
+even_round(){ // This function is for even rounds and calls other functions. first is Mr.Jack's turn, then two times inspector and the again Mr.Jack;
+    randomCard_maker();
 }
 map_printer(){
     // This function prints the map after each action of characters;
@@ -105,44 +92,18 @@ void menu(){
     scanf("%d", &choice);
     switch(choice){
         case 1:
-            game();
+            solo_game();
             break;
     }
+}
+int solo_game(){// solo game happens here ;)
+    prepare_game();
+    round_printer();
+    even_round();
 
 }
-void get_choice(int choice){
-    // this funtion gets the choice of user in the menu and calls the proper function;
-}
-int game(){
-}
-character* character_maker_2(char string[]){
-character *temp = (character *) malloc(sizeof(character));
-strcpy(temp -> name, string);
-temp -> next = NULL;
-return temp;
-}
-void character_maker_1(){
-    JW = character_maker_2("JW");
-    IL = character_maker_2("IL");
-    WG = character_maker_2("WG");
-    JS = character_maker_2("JS");
-    SH = character_maker_2("SH");
-    JB = character_maker_2("JB");
-    MS = character_maker_2("MS");
-    SG = character_maker_2("SG");
-}
-void first_place_set(){
-map[4][4].head = JW;
-map[4][4].head = IL;
-map[4][8].head = WG;
-map[6][3].head = SH;
-map[6][6].head = JS;
-map[8][5].head = JB;
-map[8][1].head = MS;
-map[12][5].head = SG; 
-}
-void character_info_printer(int a){ // This function prints characters' abilities;
-    switch(a){
+void character_info_printer(int card){ // This function prints characters' abilities;
+    switch(card){
         case 1:
         printf("SG:\n");
         printf("1 To 3 moves And Ability Use (whistle)\n");
@@ -190,5 +151,80 @@ void character_info_printer(int a){ // This function prints characters' abilitie
         printf(" 1 To 3 Moves And Ability Use\n");
         printf("He turns off a light and turn on another light\n");
         break;
+    }
+}
+void round_printer(){//This function prints round and can Mr.Jack escape or not;
+    printf("round%d\n", round_counter);
+    if(visible_condition)
+        printf("Mr.Jack is not visible and can escape this round!\n");
+    else
+        printf("Mr.jack is visible and can't escape! this round\n");
+}
+void first_place_set(){
+    map[4][4].character = JW;
+    map[4][4].character = IL;
+    map[4][8].character = WG;
+    map[6][3].character = SH;
+    map[6][6].character = JS;
+    map[8][5].character = JB;
+    map[8][1].character = MS;
+    map[12][5].character = SG; 
+}
+void even_round_linkedlist_creat(card* temp){ // first four cards linked list creator;
+    temp -> next = NULL;
+    if(even_round_head == NULL){
+        even_round_head = temp;
+    }
+    else{
+        card* next_node = even_round_head;
+        while(next_node -> next != NULL)
+            next_node = next_node -> next;
+        next_node -> next = temp;
+    }
+}
+initial_linkedlist(){ // contains linked list with eight
+    card *temp, *next_node;
+    int i = 0;
+    while(i != 8){
+        next_node = (card *) malloc(sizeof(card));
+        next_node -> name = i;
+        next_node -> next = NULL;
+        if(squad_head == NULL){
+            squad_head = temp = next_node;
+        }
+        else{
+            temp -> next = next_node;
+            temp = next_node;
+        }
+        i++;
+    }
+}
+void card_picker(int card_number, int i){ // picks for and for cards for two rounds;
+    if(card_number == 0){ // deleting first node;
+        card *temp = squad_head;
+        card *tmp = squad_head -> next;
+        squad_head = tmp;
+        even_round_linkedlist_creat(temp);   
+    }
+    else if(card_number == i - 1){ // deleting last node;
+        card* temp = squad_head;
+        card* tmp = squad_head;
+        while(temp -> next != NULL)
+            temp = temp -> next;
+        while(tmp -> next != temp)
+            tmp = tmp -> next;
+        tmp -> next = NULL;
+        even_round_linkedlist_creat(temp);
+    }
+    else{
+        card* temp = squad_head;
+        card* tmp = squad_head;
+        for(int j = 0; j < card_number; j++){
+            temp = temp -> next;
+        }
+        while(tmp -> next != temp)
+            tmp = tmp -> next;
+        tmp -> next = temp -> next;
+        even_round_linkedlist_creat(temp);
     }
 }
