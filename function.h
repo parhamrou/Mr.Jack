@@ -19,15 +19,17 @@ enum condition {empty, light_on, light_off, house, open, close, addition, gate};
 
 //..................heads of two linked lists............
 
-card *squad_head = NULL;
+card *squad_head = NULL; // this linkedlist is one that we pick four and four cards from
 card *even_round_head = NULL;
 card *odd_round_head = NULL;
+card* second_head = NULL; // This linked list is for Mr.Jack random choose and for Sherlock picks;
 
 //.................global variables.....................
 
 int round_counter = 1; // goes until it reaches to 8;
 int turn_counter = 0; // counts turns at each round;
 bool visible_condition = true;
+int MrJack;
 //..........two-dimensional array for places............
 
 place map[13][9];
@@ -49,8 +51,16 @@ void randomCard_maker(){ // this function generates random cards;
     }
     odd_round_head = squad_head; // set second linkedlist to four baghi cards;
 }
-void card_printer(){
-    // This function prints the abilities of each character;
+void even_card_printer(){ // This function prints the abilities of each character each round;
+    card* temp = even_round_head;
+    int i = 1;
+    while(temp != NULL){
+        printf("%d:")
+        character_info_printer(temp -> name);
+        temp = temp -> next;
+        printf("*****\n");
+        i++;
+    }
 }
 visible(){
     // This function shows that Mr.Jack is visible or not to find out that can Mr.Jack escape or not;
@@ -65,7 +75,23 @@ odd_round(){
     // This function is four odd rounds and calls other functions. first is inspector's turn , then two times Mr.Jack and then again inspector;
 }
 even_round(){ // This function is for even rounds and calls other functions. first is Mr.Jack's turn, then two times inspector and the again Mr.Jack;
+    // showing map every time;
+    int choose;
     randomCard_maker();
+    if(round_counter == 1){
+    randomCard_maker_2();
+    Mr_jack_CardPicker();
+    }
+    for(int i = 0; i < 4; i++){
+    round_printer();
+    even_card_printer();
+    printf("inspecteur! what card do you choose?!\n");
+    scanf("%d", &choose);
+    card_delete(choose - 1, 3 - i, even_round_head); // we delete that card for the next round;
+    search_character(choose); // searches characcter and chows possible moves
+    // must find it and build 8 functions for each character. in that functions must get moves and everything;
+
+}
 }
 map_printer(){
     // This function prints the map after each action of characters;
@@ -104,49 +130,49 @@ int solo_game(){// solo game happens here ;)
 }
 void character_info_printer(int card){ // This function prints characters' abilities;
     switch(card){
-        case 1:
+        case 0:
         printf("SG:\n");
         printf("1 To 3 moves And Ability Use (whistle)\n");
         printf("He can make other characters 3 moves closer to himself\n");
         break;
 
-        case 2:
+        case 1:
         printf("IL:\n");
         printf("1 To 3 Moves And Ability Use\n");
         printf("He can free one of the exits and block another one\n");
         break;
 
-        case 3:
+        case 2:
         printf("WG\n");
         printf("1 To 3 Moves Or Ability Use\n");
         printf("Instead of moving, He can changes his place with another character\n");
         break;
 
-        case 4:
+        case 3:
         printf("SH\n");
         printf("1 to 3 Moves then ability use\n");
         printf("He can draw the the top card from the alibi pile and note the character\n");
         break;
 
-        case 5:
+        case 4:
         printf("JB\n");
         printf("1 To 3 Moves And Ability Use\n");
         printf("He can open a manhole and closes another\n");
         break;
 
-        case 6:
+        case 5:
         printf("JH\n");
         printf("1 To 3 Moves Then Ability Use\n");
         printf("Watson carries a lantern, pictured on his character token. This lantern illuminates all the characters standing straight ahead of him!\n");
         break;
 
-        case 7:
+        case 6:
         printf("MS\n");
         printf("1 To 4 Moves With Optional Ability Use\n");
         printf("She can cross any hex but she must stop her movement on a street hex\n");
         break;
 
-        case 8:
+        case 7:
         printf("JS\n");
         printf(" 1 To 3 Moves And Ability Use\n");
         printf("He turns off a light and turn on another light\n");
@@ -170,7 +196,7 @@ void first_place_set(){
     map[8][1].character = MS;
     map[12][5].character = SG; 
 }
-void even_round_linkedlist_creat(card* temp){ // first four cards linked list creator;
+void even_round_linkedlist_creat(card* temp){ // first four cards linked list creator for even rounds;
     temp -> next = NULL;
     if(even_round_head == NULL){
         even_round_head = temp;
@@ -199,7 +225,7 @@ initial_linkedlist(){ // contains linked list with eight
         i++;
     }
 }
-void card_picker(int card_number, int i){ // picks for and for cards for two rounds;
+void card_picker(int card_number, int i){ // picks four and four cards for two rounds and insert them to two other linked lists;
     if(card_number == 0){ // deleting first node;
         card *temp = squad_head;
         card *tmp = squad_head -> next;
@@ -226,5 +252,101 @@ void card_picker(int card_number, int i){ // picks for and for cards for two rou
             tmp = tmp -> next;
         tmp -> next = temp -> next;
         even_round_linkedlist_creat(temp);
+    }
+}
+void card_delete(int choose, int j, card** head){
+    card* temp = *head;
+    int i = 0;
+    while(temp -> name != choose){
+        temp = temp -> name;
+        i++;
+    }
+    if(i == 0){
+        card* tmp = *head -> next;
+        *head = tmp;
+        free(temp);
+    }
+    else if(i == j){
+        card* tmp = *head;
+        while(tmp -> next != temp)
+            tmp = tmp -> next;
+        tmp -> next = NULL;
+        free(temp);
+    }
+    else{
+        card* tmp = even_round_head;
+        while(tmp -> next != temp)
+            tmp = tmp -> next;
+        tmp -> next = temp -> next;
+        free(temp);
+    }
+}
+void possible_moves(int x, int y){ // this function shows the possible moves;
+// براساس کاراکتر و خونه‌های دورش باید حرکت‌ها رو بگه
+    if(!(x % 2)){ // for odd columns;
+        switch(map[x][y].character){
+            case SG:
+            // something:
+            break;
+            case IL:
+            //something:
+            break;
+            case WG:
+            // something
+            break;
+            case SH:
+            //something
+            break;
+            case JB:
+            //something;
+            break;
+            case JW:
+            //something
+            break;
+            case MS:
+            //something
+            break;
+            case JS:
+            //something;
+            break;
+        }
+    
+    }
+    else{ // for even columns;
+
+    }
+}
+void search_character(int number){ // this functions catches the number character and finds it from array;
+    for(int i = 0; i < 13; i++){
+        for(int j = 0; j < 9; j++){
+            if(map[i][j].character == number){
+                possible_moves(i, j);
+                break;
+            }
+        }
+    }
+}
+void randomCard_maker_2(){ // This function creats the second catagory of cards which we pick Mr.Jack and sherlock choices from;
+    card *next_node; *temp;
+    for(int i = 0; i < 8; i++){
+        next_node = (card *) malloc(sizeof(card));
+        next_node -> name = i;
+        next_node -> next = NULL;
+        if(second_head == NULL){
+            second_head = temp = next_node;
+        }
+        else{
+            temp -> next = next_node;
+            next_node = next_node -> next;
+        }
+    }
+}
+void Mr_jack_CardPicker(){ // This function chooses MrJack card at the begining of the game randomly;
+    srand(time(NULL));
+    MrJack = rand() % 8;
+    for(int i = 0; i < 8; i++){
+        if(i == MrJack){
+            card_delete(MrJack, i - 1, second_head);
+        }
     }
 }
