@@ -71,8 +71,9 @@ odd_round(){
 }
 int even_round(){ // This function is for even rounds and calls other functions. first is Mr.Jack's turn, then two times inspector and the again Mr.Jack;
     // showing map every time;
+    int choose;
     randomCard_maker();        // هنوز حالت رفتن بیرون کاراکتر رو در نظر نگرفتی!
-    if(round_counter == 1){
+    if(round_counter == 1){    // هنوز چاه‌ها رو در نظر نگرفتی!
     randomCard_maker_2();
     Mr_jack_CardPicker();
     printf("Inspecteur! Don't look :))\n Mr.Jack's card is %d\n", MrJack);
@@ -81,7 +82,7 @@ int even_round(){ // This function is for even rounds and calls other functions.
     even_card_printer();
     printf("inspecteur! what card do you choose?!\n"); // this must be repeated four times;
     scanf("%d", &choose);
-    card_delete(choose - 1, 3 - i, even_round_head); // we delete that card for the next round;
+    card_delete(choose, 3, even_round_head); // we delete that card for the next round;
     search_character(choose); // now one character (one person) did his actions;
     if(game_over == 1) 
         return 1; // that means game is over;
@@ -89,7 +90,7 @@ int even_round(){ // This function is for even rounds and calls other functions.
     even_card_printer();
     printf("Mr.Jack! What card do you choose?!\n");
     scanf("%d", &choose);
-    card_delete(choose - 1, 3 - i, even_round_head);
+    card_delete(choose, 2, even_round_head);
     search_character(choose);
     if(game_over == 1)
         return 1;
@@ -97,7 +98,7 @@ int even_round(){ // This function is for even rounds and calls other functions.
     even_card_printer();
     printf("Mr.Jack! What card do you choose?!\n");
     scanf("%d", &choose);
-    card_delete(choose - 1, 3 - i, even_round_head);
+    card_delete(choose, 1, even_round_head);
     search_character(choose);
     if(game_over == 1)
         return 1;
@@ -105,7 +106,7 @@ int even_round(){ // This function is for even rounds and calls other functions.
     even_card_printer();
     printf("inspecteur! what card do you choose?!\n"); // this must be repeated four times;
     scanf("%d", &choose);
-    card_delete(choose - 1, 3 - i, even_round_head); // we delete that card for the next round;
+    card_delete(choose, 0, even_round_head); // we delete that card for the next round;
     search_character(choose);
     return 0; // two users did all they moves;
 }
@@ -273,7 +274,7 @@ void card_delete(int choose, int j, card* head){
     card* temp = head;
     int i = 0;
     while(temp -> name != choose){
-        temp = temp -> name;
+        temp = temp -> next;
         i++;
     }
     if(i == 0){
@@ -289,7 +290,7 @@ void card_delete(int choose, int j, card* head){
         free(temp);
     }
     else{
-        card* tmp = even_round_head;
+        card* tmp = head;
         while(tmp -> next != temp)
             tmp = tmp -> next;
         tmp -> next = temp -> next;
@@ -356,36 +357,9 @@ void Mr_jack_CardPicker(){ // This function chooses MrJack card at the begining 
     printf("mr jack is %d\n", MrJack);
     for(int i = 7; i > -1; i--){
         if(i == MrJack){
-            card_delete_2(MrJack);
+            card_delete(MrJack, 7, second_head);
             break;
         }
-    }
-}
-void card_delete_2(int MrJack){
-    int i = 0;
-    card* temp = second_head;
-    while(temp -> name != MrJack){
-        temp = temp -> next;
-        i++;
-    }
-    if(i == 0){
-        card* tmp = second_head -> next;
-        second_head = tmp;
-        free(temp);
-    }
-    else if(i == 7){
-        card* tmp = second_head;
-        while(tmp -> next != temp)
-            tmp = tmp -> next;
-        tmp -> next = NULL;
-        free(temp);
-    }
-    else{
-        card* tmp = second_head;
-        while(tmp -> next != temp)
-            tmp = tmp -> next;
-        tmp -> next = temp -> next;
-        free(temp);
     }
 }
 void SG_func(int x, int y){
