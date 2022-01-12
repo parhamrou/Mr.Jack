@@ -1,7 +1,7 @@
 //...................palces' struct.....................
 
 typedef struct place{
-    int place_type;  // 0.empty    1.on light    2.off light   3.house    4.open manhole    5. close manhole    6.addition place     7.close gate   8.open gate   
+    int place_type;  // 0. normal    1.on light    2.off light   3.house    4.open manhole    5. close manhole    6.addition place     7.close gate   8.open gate   
     int character;   // // 0:SERGENT GOODLEY     1:INSPECTEUR LESTRADE     2:SIR WILLIAM GULL       3:SHERLOCK HOLMES
                     // 4:JEREMY BERT         5:JOHN H. WATSON           6:MISS STEALTHY            7:JOHN SMITH
 }place;
@@ -15,7 +15,7 @@ typedef struct card{
 //..................Enumerations........................
 
 enum persons {SG, IL, WG, SH, JB, JW, MS, JS};
-enum condition {empty, light_on, light_off, house, open, close, addition, close_gate, open_gate};
+enum condition {normal, light_on, light_off, house, open, close, addition, close_gate, open_gate};
 
 //..................heads of two linked lists............
 
@@ -75,8 +75,9 @@ int even_round(){ // This function is for even rounds and calls other functions.
     randomCard_maker();       
     if(round_counter == 1){    // هنوز چاه‌ها رو در نظر نگرفتی!
     randomCard_maker_2();      // یه فکری به حال نوبت شمار بکن!
-    Mr_jack_CardPicker();  
-    printf("Inspecteur! Don't look :))\n Mr.Jack's card is %d\n", MrJack);
+    Mr_jack_CardPicker();      // هنوز دستگیر کردن و اینا خرابه توی تابع حرکت. بستگی به این هم داره که راند زوجیم یا فرد! درستش کن
+    printf("Inspecteur! Don't look :))\n Mr.Jack's card is ");
+    MrJack_card_show(MrJack);
     }
     round_printer();
     even_card_printer();
@@ -366,8 +367,36 @@ void Mr_jack_CardPicker(){ // This function chooses MrJack card at the begining 
         }
     }
 }
+void MrJack_card_show(int number){  
+    switch(number){
+        case 0:
+            printf("SERGENT GOODLEY\n");
+            break;
+        case 1:
+            printf("INSPECTEUR LESTRADE\n");
+            break;
+        case 2:
+            printf("SIR WILLIAM GULL\n");
+            break;
+        case 3:
+            printf("SHERLOCK HOLMES\n");
+            break;
+        case 4:
+            printf("JEREMY BERT\n");
+            break;
+        case 5:
+            printf("JOHN H. WATSON\n");
+            break;
+        case 6:
+            printf("MISS STEALTHY\n");
+            break;
+        case 7:
+            printf("JOHN SMITH\n");
+            break;
+    }
+}
 void SG_func(int x, int y){
-    //
+    
 }
 void IL_func(int x, int y){
 
@@ -388,7 +417,7 @@ void JB_func(int x, int y){
     scanf("%d", &choice);
     for(int i = 0; i < choice; i++){
         if(!(x % 2)){
-        temp = odd_x_moves(x, y); // a bug is here. now Mr Jack can arrest either :)))
+        temp = odd_x_moves(&x, &y); // a bug is here. now Mr Jack can arrest either :)))
         if(temp == 1 || temp == -1 || temp == 2){ // inspuecteur arrested somebody or MrJack ran away
             game_over = 1;
             return;
@@ -396,7 +425,7 @@ void JB_func(int x, int y){
         continue;
         }
         else{
-        temp = even_x_moves(x, y);
+        temp = even_x_moves(&x, &y);
         if(temp == 1 || temp == -1 || temp == 2){
             game_over = 1;
             return;
@@ -413,6 +442,7 @@ void JB_func(int x, int y){
     printf("Enter nokhtasat: ");
     scanf("%d %d", &x__, &y__);
     swap_manholes(x_, y_, x__, y__);
+    return;
     }
     else{
     printf("which manhole do you want to open?\n");
@@ -428,20 +458,21 @@ void JB_func(int x, int y){
     scanf("%d", &choice);
     for(int i = 0; i < choice; i++){
         if(!(x % 2)){
-        temp = odd_x_moves(x, y); 
+        temp = odd_x_moves(&x, &y); 
         if(temp == 1 || temp == -1 || temp == 2){
             game_over = 1;
             return;
         }
         }
         else{
-        temp = even_x_moves(x, y);
+        temp = even_x_moves(&x, &y);
         if(temp == 1 || temp == -1 || temp == 2){
             game_over = 1;
             return;
         }
         }
     }
+    return;
     }
 }
 void JW_func(int x, int y){
@@ -458,9 +489,10 @@ void make_move(int x, int y, int x_, int y_){
     map[x][y].character = map[x_][y_].character;
     map[x_][y_].character = temp;
 }
-int even_x_moves(int x, int y){ // prints move options;
+int even_x_moves(int *x_, int *y_){ // prints move options;
+    int x = *x_, y = *y_;
     switch(map[x][y+1].place_type){ // in this part we just consider place types not neighbor character;
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x][y+1].character == 10)
@@ -469,7 +501,6 @@ int even_x_moves(int x, int y){ // prints move options;
             if(turn_counter == 1 || turn_counter == 4) // if it's inspecteur turn
                 printf("11. go north and arrest him/her   ");
         }
-        break;
         case open_gate:
         if(!visible_condition && (turn_counter == 2 || turn_counter == 3)){
             printf("20. run away!  ");
@@ -477,7 +508,7 @@ int even_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x][y-1].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x][y-1].character == 10)
@@ -486,15 +517,14 @@ int even_x_moves(int x, int y){ // prints move options;
             if(turn_counter == 1 || turn_counter == 4)
                 printf("12. go south and arrest him/her   ");
         }
-        break;
         case open_gate:
         if(!visible_condition && (turn_counter == 2 || turn_counter == 3)){
             printf("20. run away!  ");
         }
         break;
     }
-    switch(map[x+1][y].place_type){
-        case empty:
+    switch(map[x+1][y+1].place_type){
+        case normal:
         case open:
         case close:
         if(map[x+1][y+1].character == 10)
@@ -506,22 +536,22 @@ int even_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x+1][y].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
-        if(map[x][y-1].character == 10)
+        if(map[x+1][y].character == 10)
             printf("4.South-East  ");
         else{
             if(turn_counter == 1 || turn_counter == 4)
-                printf("14. go south-easat and arrest him/her   ");
+                printf("14. go south-east and arrest him/her   ");
         }
         break;
     }
     switch(map[x-1][y].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
-        if(map[x-1][y-1].character == 10)
+        if(map[x-1][y].character == 10)
             printf("5.South-West  ");
         else{
             if(turn_counter == 1 || turn_counter == 4)
@@ -530,10 +560,10 @@ int even_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x-1][y+1].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
-        if(map[x+1][y].character == 10)
+        if(map[x-1][y+1].character == 10)
             printf("6.North-West  ");
         else{
             if(turn_counter == 1 || turn_counter == 4)
@@ -544,18 +574,32 @@ int even_x_moves(int x, int y){ // prints move options;
     int temp;
     scanf("%d", &temp);
     if(temp < 10){ // User doesn't want to arrest anybody
-        if(temp == 1)
+        if(temp == 1){
             make_move(x, y, x, y + 1);
-        else if(temp == 2)
+            *y_ += 1;
+        }
+        else if(temp == 2){
             make_move(x, y, x, y - 1);
-        else if(temp == 3)
+            *y_ -= 1;
+        }
+        else if(temp == 3){
             make_move(x, y, x + 1, y + 1);
-        else if(temp == 4)
+            *x_ += 1;
+            *y_ += 1;
+        }
+        else if(temp == 4){
             make_move(x, y, x + 1, y);
-        else if(temp == 5)
-            make_move(x, y, x - 1, y - 1);
-        else
+            *x_ += 1;
+        }
+        else if(temp == 5){
+            make_move(x, y, x - 1, y);
+            *x_ -= 1;
+        }
+        else{
             make_move(x, y, x - 1, y + 1);
+            *x_ -= 1;
+            *y_ += 1;
+        }
         return 0; // user didn't arrest anybody;
     }
     else{
@@ -569,7 +613,7 @@ int even_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 12){
+        else if(temp == 12){
             if(map[x][y-1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -579,7 +623,7 @@ int even_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 13){
+        else if(temp == 13){
             if(map[x+1][y+1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -589,7 +633,7 @@ int even_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 14){
+        else if(temp == 14){
             if(map[x+1][y].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -598,7 +642,7 @@ int even_x_moves(int x, int y){ // prints move options;
                 printf("You arrested Mr Jack wrongly. You lose!\n");
                 return -1;
             }}
-        if(temp == 15){
+        else if(temp == 15){
             if(map[x-1][y].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -608,7 +652,7 @@ int even_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 16){
+        else if(temp == 16){
             if(map[x-1][y+1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -618,15 +662,16 @@ int even_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 20){
+        else if(temp == 20){
             printf("You ran away from city! You won!\n");
             return 2;
         }
     }
 }
-int odd_x_moves(int x, int y){ // prints move options;
+int odd_x_moves(int *x_, int *y_){ // prints move options;
+    int x = *x_, y = *y_;
     switch(map[x][y+1].place_type){ // in this part we just consider place types not neighbor character;
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x][y+1].character == 10)
@@ -638,7 +683,7 @@ int odd_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x][y-1].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x][y-1].character == 10)
@@ -650,7 +695,7 @@ int odd_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x+1][y].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x+1][y].character == 10)
@@ -662,10 +707,10 @@ int odd_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x+1][y-1].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
-        if(map[x][y-1].character == 10)
+        if(map[x+1][y-1].character == 10)
             printf("4.South-East  ");
         else{
             if(turn_counter == 2 || turn_counter == 3)
@@ -674,7 +719,7 @@ int odd_x_moves(int x, int y){ // prints move options;
         break;
     }
     switch(map[x-1][y-1].place_type){
-        case empty:
+        case normal:
         case open:
         case close:
         if(map[x-1][y-1].character == 10)
@@ -685,11 +730,11 @@ int odd_x_moves(int x, int y){ // prints move options;
         }
         break;
     }
-    switch(map[x+1][y].place_type){
-        case empty:
+    switch(map[x-1][y].place_type){
+        case normal:
         case open:
         case close:
-        if(map[x+1][y].character == 10)
+        if(map[x-1][y].character == 10)
             printf("6.North-West  ");
         else{
             if(turn_counter == 2 || turn_counter == 3)
@@ -700,18 +745,32 @@ int odd_x_moves(int x, int y){ // prints move options;
     int temp;
     scanf("%d", &temp);
     if(temp < 10){ // User doesn't want to arrest anybody
-        if(temp == 1)
+        if(temp == 1){
             make_move(x, y, x, y + 1);
-        else if(temp == 2)
+            *y_ += 1;
+        }
+        else if(temp == 2){
             make_move(x, y, x, y - 1);
-        else if(temp == 3)
+            *y_ -= 1;
+        }
+        else if(temp == 3){
             make_move(x, y, x + 1, y);
-        else if(temp == 4)
+            *x_ += 1;
+        }
+        else if(temp == 4){
             make_move(x, y, x + 1, y - 1);
-        else if(temp == 5)
+            *x_ += 1;
+            *y_ -= 1;
+        }
+        else if(temp == 5){
             make_move(x, y, x - 1, y - 1);
-        else
-            make_move(x, y, x + 1, y);
+            *x_ -= 1;
+            *y_ -= 1;
+        }
+        else{
+            make_move(x, y, x - 1, y);
+            *x_ -= 1;
+        }
         return 0; // he did a mvoe not arrest somebody;
     }
     else{
@@ -725,7 +784,7 @@ int odd_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 12){
+        else if(temp == 12){
             if(map[x][y-1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -735,7 +794,7 @@ int odd_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 13){
+        else if(temp == 13){
             if(map[x+1][y].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -745,7 +804,7 @@ int odd_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 14){
+        else if(temp == 14){
             if(map[x+1][y-1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -754,7 +813,7 @@ int odd_x_moves(int x, int y){ // prints move options;
                 printf("You arrested Mr Jack wrongly. You lose!\n");
                 return -1;
             }}
-        if(temp == 15){
+        else if(temp == 15){
             if(map[x-1][y-1].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
@@ -764,7 +823,7 @@ int odd_x_moves(int x, int y){ // prints move options;
                 return -1;
             }
         }
-        if(temp == 16){
+        else if(temp == 16){
             if(map[x-1][y].character == MrJack){
                 printf("You arrested Mr Jack! You won!\n");
                 return 1; 
