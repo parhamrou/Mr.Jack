@@ -373,6 +373,7 @@ void Mr_jack_CardPicker(){ // This function chooses MrJack card at the begining 
             card_delete(MrJack, 7, &second_head);
             break;
         }
+    
     }
 }
 void MrJack_card_show(int number){  
