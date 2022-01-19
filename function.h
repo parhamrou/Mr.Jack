@@ -16,30 +16,9 @@ typedef struct card
 
 //..................Enumerations........................
 
-enum persons
-{
-    SG,
-    IL,
-    WG,
-    SH,
-    JB,
-    JW,
-    MS,
-    JS
-};
-enum condition
-{
-    normal,
-    light_on,
-    light_off,
-    house,
-    open,
-    close,
-    addition,
-    close_gate,
-    open_gate
-};
-
+enum persons {SG, IL, WG, SH, JB, JW, MS, JS};
+enum condition {normal, light_on, light_off, house, open, close, addition, close_gate, open_gate};
+enum persons2 {SG2 = 20, IL2, WG2, SH2, JB2, JW2, MS2, JS2};
 //..................heads of two linked lists............
 
 card *squad_head = NULL; // this linkedlist is one that we pick four and four cards from
@@ -66,7 +45,6 @@ void prepare_game()
 { // This function should be called at the first of the game;
     map_loader();
     first_place_set();
-    initial_linkedlist(); // unshuffled cards;
 }
 void randomCard_maker()
 { // this function generates random cards;
@@ -100,397 +78,6 @@ void odd_card_printer()
         character_info_printer(temp->name);
         temp = temp->next;
         printf("* * * * *\n");
-    }
-}
-visible()
-{// This function shows that Mr.Jack is visible or not to find out that can Mr.Jack escape or not;
-    int x, y; // MrJack mokhtasat;
-    int flag = 0;
-    for(int i = 0; i < 13; i++)
-    {
-        int temp = 0;
-        for(int j = 0; j < 9; j++)
-        {
-            if(map[i][j].character == MrJack)
-            {
-                x = i;
-                y = j;
-                temp = 1;
-                break;
-            }
-        }
-        if(temp == 1)
-            break;
-    }
-    if(x % 2) // even x; FOR CHEKING LIGHTS AND NEIGHBOR CHARACTERS;
-    {
-        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y+1].place_type == light_on ||
-            map[x+1][y].place_type == light_on || map[x-1][y].place_type == light_on || map[x-1][y+1].place_type == light_on
-            map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y+1].character != 10 ||
-            map[x+1][y].character != 10 || map[x-1][y].character != 10 || map[x-1][y+1].character != 10)
-            visible_condition = true;
-            flag = 1;
-    }
-    else
-    {
-        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y].place_type == light_on ||
-           map[x+1][y-1].place_type == light_on || map[x-1][y-1].place_type == light_on || map[x-1][y].place_type == light_on
-           map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y].character != 10 ||
-           map[x+1][y-1].character != 10 || map[x-1][y-1].character != 10 || map[x-1][y].character != 10)
-            visible_condition = true;
-            flag = 1;
-    }
-    if(flag == 1) // cheking if MrJack is found or not;
-    {
-        visible2(1);
-        return;
-    }
-    if(JW_x % 2) // even x
-    {                                                                //0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west
-        x_temp = JW_x, y_temp = JW_y;
-        if(lantern_dir == 0)
-        {
-            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
-            {
-                y_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 1)
-        {
-            while(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
-            {
-                x_temp++;
-                y_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
-                {
-                    x_temp++;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 2)
-        {
-            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
-            {
-                x_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 12)
-                {
-                    x_temp++;
-                    y_temp--;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else{
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 3)
-        {
-            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
-            {
-                y--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 4)
-        {
-            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
-            {
-                x_temp--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 0)
-                {
-                    x_temp--;
-                    y_temp--;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 5)
-        {
-            while(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y != 8)
-            {
-                x_temp--;
-                y_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
-                {
-                    x_temp--;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-    }
-    else
-    {
-        x_temp = JW_x, y_temp = JW_y;
-        if(lantern_dir == 0)
-        {
-            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
-            {
-                y_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 1)
-        {
-            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
-            {
-                x_temp++;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
-                {
-                    x_temp++;
-                    y_temp++;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 2)
-        {
-            while(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && x_temp != 12 && y_temp != 0)
-            {
-                x_temp++;
-                y_temp--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
-                {
-                    x_temp++;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else{
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 3)
-        {
-            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
-            {
-                y--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 4)
-        {
-            while(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && x_temp != 0 && y_temp != 0)
-            {
-                x_temp--;
-                y_temp--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
-                {
-                    x_temp--;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-        else if(lanter_dir == 5)
-        {
-            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
-            {
-                x_temp--;
-                if(map[x_temp][y_temp].character == MrJack)
-                {
-                    visible_condition = true;
-                    flag = 1;
-                    visible2(1);
-                    return;
-                }
-                if(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y != 12)
-                {
-                    x_temp--;
-                    y_temp++;
-                    if(map[x_temp][y_temp].character == MrJack)
-                    {
-                        visible_condition = true;
-                        flag = 1;
-                        visible2(1);
-                        return;
-                    }
-                }
-                else
-                {
-                    visible2(0);
-                    return;
-                }
-            }
-            visible2(0);
-            return;
-        }
-
-    }
-    visible2(0);
-}
-void visible2(int number) // if input = 1, Mr Jack is visible; else, he is not visible
-{
-    if(number)
-    {
-
-    }
-    else
-    {
-        
     }
 }
 odd_round()
@@ -545,6 +132,7 @@ int even_round()
 { // This function is for even rounds and calls other functions. first is Mr.Jack's turn, then two times inspector and the again Mr.Jack;
     // showing map every time;
     int choose;
+    initial_linkedlist();
     randomCard_maker();
     if (round_counter == 1)
     {
@@ -638,23 +226,39 @@ void menu()
 int multiplay()
 { // multiplay game happens here ;)
     int result = -1;
-    prepare_game();
-    while(result != 1){
-    result = even_round();
-    if(result == 1)
-    {
-        printf("The game is over!\n");
-        return 1;
+    for(int i = 0; i < 4; i++){
+        if(i == 0)
+        {
+            prepare_game();
+        }
+        result = even_round();
+        if(result == 1)
+        {
+            printf("The game is over!\n");
+            return 1;
+        }
+        round_counter++;
+        result = odd_round();
+        if(result == 1)
+        {
+            printf("The game is over!\n");
+            return 1; // the game is over;
+        }
+        if(i != 3)
+        {
+            visible();
+            round_counter++;
+            squad_head = NULL;
+            even_round_head = NULL;
+            odd_round_head = NULL;
+        }
+        else
+        {
+            printf("The rounds are finished!\n");
+            printf("The game is over! Mr Jack wins!\n");
+            return 1;
+        }
     }
-    result = odd_round();
-    if(result == 1)
-    {
-        printf("The game is over!\n");
-        return 1; // the game is over;
-    }
-    visible();
-    }
-
 }
 void character_info_printer(int card)
 { // This function prints characters' abilities;
@@ -843,27 +447,35 @@ void possible_moves(int x, int y)
     switch (map[x][y].character)
     {
     case SG:
+    case SG2:
         SG_func(x, y);
         return;
     case IL:
+    case IL2:
         IL_func(x, y);
         return;
     case WG:
+    case WG2:
         WG_func(x, y);
         return;
     case SH:
+    case SH2:
         SH_func(x, y);
         return;
     case JB:
+    case JB2:
         JB_func(x, y);
         return;
     case JW:
+    case JW2:
         JW_func(x, y);
         return;
     case MS:
+    case MS2:
         MS_func(x, y);
         return;
     case JS:
+    case JS2:
         JS_func(x, y);
         return;
     }
@@ -874,7 +486,7 @@ void search_character(int number)
     {
         for (int j = 0; j < 9; j++)
         {
-            if (map[i][j].character == number)
+            if (map[i][j].character == number || map[i][j].character == number + 20)
             {
                 possible_moves(i, j);
                 return;
@@ -1455,7 +1067,7 @@ int even_x_moves(int *x_, int *y_, int passed)
                 printf("3. North-East  ");
         }
     }
-    if (x != 12 && y != 0)
+    if (x != 12)
     {
         switch (map[x + 1][y].place_type)
         {
@@ -1475,7 +1087,7 @@ int even_x_moves(int *x_, int *y_, int passed)
                 printf("4. South-East  ");
         }
     }
-    if (x != 0 && y != 0)
+    if (x != 0)
     {
         switch (map[x - 1][y].place_type)
         {
@@ -1698,7 +1310,7 @@ int odd_x_moves(int *x_, int *y_, int passed)
                 printf("2. South  ");
         }
     }
-    if (y != 8 && x != 12)
+    if (x != 12)
     {
         switch (map[x + 1][y].place_type)
         {
@@ -1758,7 +1370,7 @@ int odd_x_moves(int *x_, int *y_, int passed)
                 printf("5.South-West  ");
         }
     }
-    if (x != 0 && y != 8)
+    if (x != 0)
     {
         switch (map[x - 1][y].place_type)
         {
@@ -2023,7 +1635,7 @@ void WG_character_change(int x, int y, int number)
     {
         for (int j = 0; j < 9; j++)
         {
-            if (map[i][j].character == number)
+            if (map[i][j].character == number || map[i][j].character == number + 20)
             {
                 x_ = i;
                 y_ = j;
@@ -2069,7 +1681,7 @@ void SG_action1(int number, int x, int y)
         int flag = 0;
         for (int j = 0; j < 9; j++)
         {
-            if (map[i][j].character == number)
+            if (map[i][j].character == number || map[i][j].character == number + 20)
             {
                 x_ = i;
                 y_ = j;
@@ -2124,7 +1736,7 @@ void SG_even(int x, int y, int x_, int y_)
     case normal:
     case open:
     case close:
-        if (x_ != 12 && y_ != 0)
+        if (x_ != 12)
         {
             if (map[x_ + 1][y_].character == 10 && (abs(x - x_) + abs(y - y_) > abs(x - x_ - 1) + abs(y - y_)))
                 printf("4. move to South-East  ");
@@ -2135,7 +1747,7 @@ void SG_even(int x, int y, int x_, int y_)
     case normal:
     case open:
     case close:
-        if (x_ != 0 && y_ != 0)
+        if (x_ != 0)
         {
             if (map[x_ - 1][y_].character == 10 && (abs(x - x_) + abs(y - y_) > abs(x - x_ + 1) + abs(y - y_)))
                 printf("5.move to South-West  ");
@@ -2208,7 +1820,7 @@ void SG_odd(int x, int y, int x_, int y_)
     case normal:
     case open:
     case close:
-        if (y_ != 8 && x_ != 12)
+        if (x_ != 12)
         {
             if (map[x_ + 1][y_].character == 10 && (abs(x - x_) + abs(y - y_) > abs(x - x_ - 1) + abs(y - y_)))
                 printf("3. move to North-East  ");
@@ -2241,7 +1853,7 @@ void SG_odd(int x, int y, int x_, int y_)
     case normal:
     case open:
     case close:
-        if (x_ != 0 && y_ != 8)
+        if (x_ != 0)
         {
             if (map[x_ - 1][y_].character == 10 && (abs(x - x_) + abs(y - y_) > abs(x - x_ + 1) + abs(y - y_)))
                 printf("6. move to North-West  ");
@@ -2279,4 +1891,1008 @@ JW_action(){
     printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n");
     scanf("%d", &lantern_dir);
     return;
+}
+void visible()
+{// This function shows that Mr.Jack is visible or not to find out that can Mr.Jack escape or not;
+    int x, y; // MrJack mokhtasat;
+    int flag = 0;
+    for(int i = 0; i < 13; i++)
+    {
+        int temp = 0;
+        for(int j = 0; j < 9; j++)
+        {
+            if(map[i][j].character == MrJack)
+            {
+                x = i;
+                y = j;
+                temp = 1;
+                break;
+            }
+        }
+        if(temp == 1)
+            break;
+    }
+    if(x % 2) // even x; FOR CHEKING LIGHTS AND NEIGHBOR CHARACTERS;
+    {
+        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y+1].place_type == light_on ||
+            map[x+1][y].place_type == light_on || map[x-1][y].place_type == light_on || map[x-1][y+1].place_type == light_on ||
+            map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y+1].character != 10 ||
+            map[x+1][y].character != 10 || map[x-1][y].character != 10 || map[x-1][y+1].character != 10)
+            visible_condition = true;
+            flag = 1;
+    }
+    else
+    {
+        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y].place_type == light_on ||
+           map[x+1][y-1].place_type == light_on || map[x-1][y-1].place_type == light_on || map[x-1][y].place_type == light_on ||
+           map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y].character != 10 ||
+           map[x+1][y-1].character != 10 || map[x-1][y-1].character != 10 || map[x-1][y].character != 10)
+            visible_condition = true;
+            flag = 1;
+    }
+    if(flag == 1) // cheking if MrJack is found or not;
+    {
+        visible2(1);
+        return;
+    }
+    if(JW_x % 2) // even x
+    {                                                                //0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+            {
+                x_temp++;
+                y_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else{
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
+            {
+                y--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 0)
+                {
+                    x_temp--;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y != 8)
+            {
+                x_temp--;
+                y_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+    }
+    else
+    {
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && x_temp != 12 && y_temp != 0)
+            {
+                x_temp++;
+                y_temp--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else{
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
+            {
+                y_temp--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && x_temp != 0 && y_temp != 0)
+            {
+                x_temp--;
+                y_temp--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character == MrJack)
+                {
+                    visible_condition = true;
+                    flag = 1;
+                    visible2(1);
+                    return;
+                }
+                if(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y != 12)
+                {
+                    x_temp--;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character == MrJack)
+                    {
+                        visible_condition = true;
+                        flag = 1;
+                        visible2(1);
+                        return;
+                    }
+                }
+                else
+                {
+                    visible2(0);
+                    visible_condition = false;
+                    return;
+                }
+            }
+            visible2(0);
+            visible_condition = false;
+            return;
+        }
+
+    } //*
+    visible_condition = false;
+    visible2(0);
+    return;
+}
+void visible2(int number) 
+{
+    if(number) // MrJack is visible;
+    {
+        int array[30];
+        int x = 0;
+        for(int i = 0; i < 30; i++)
+        {
+            array[i] = -1;              
+        }
+        for(int i = 0; i < 13; i++)
+        {
+            for(int j = 0; j < 9; j++)
+            {
+                if(map[i][j].character < 10) // wasn't innocent before; CHEKING LIGHTS AND NEIGHBORS
+                {
+                    if(i % 2) //even
+                    {
+                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j+1].place_type == light_on ||
+                    map[i+1][j].place_type == light_on || map[i-1][j].place_type == light_on || map[i-1][j+1].place_type == light_on ||
+                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j+1].character != 10 ||
+                    map[i+1][j].character != 10 || map[i-1][j].character != 10 || map[i-1][j+1].character != 10)
+                    {
+                        array[x] = map[i][j].character;
+                        x++;
+                    }
+                    }
+                    else      // odd
+                    {
+                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j].place_type == light_on ||
+                    map[i+1][j-1].place_type == light_on || map[i-1][j-1].place_type == light_on || map[i-1][j].place_type == light_on ||
+                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j].character != 10 ||
+                    map[i+1][j-1].character != 10 || map[i-1][j-1].character != 10 || map[i-1][j].character != 10)
+                    {
+                        array[x] = map[i][j].character;
+                        x++;
+                    }
+                    }
+                }
+            }
+        }
+        if(JW_x % 2) // even x
+    {                                                                //0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+            {
+                x_temp++;
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++; 
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y_temp != 0)
+            {
+                y_temp--;
+                if(map[x_temp][y_temp].character  < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 0)
+                {
+                    x_temp--;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y_temp != 8)
+            {
+                x_temp--;
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+    }
+    else
+    {
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && x_temp != 12 && y_temp != 0)
+            {
+                x_temp++;
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y_temp != 0)
+            {
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && x_temp != 0 && y_temp != 0)
+            {
+                x_temp--;
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    array[x] = map[x_temp][y_temp].character;
+                    x++;
+                }
+                if(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y_temp != 12)
+                {
+                    x_temp--;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        array[x] = map[x_temp][y_temp].character;
+                        x++;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+    }
+    for(int i = 0; i < 13; i++)
+    {
+        for(int j = 0; j < 9; j++)
+        {
+            if(map[i][j].character < 10)
+            {
+                int flag = 0;
+                for(int z = 0; z < 30; z++)
+                {
+                    if(array[z] == map[i][j].character)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(flag == 0)
+                {
+                    map[i][j].character += 20;
+                }
+            }
+        }
+    }
+    }
+    else       // MrJack is not visible;
+    {
+        for(int i = 0; i < 13; i++)
+        {
+            for(int j = 0; j < 9; j++)
+            {
+                if(map[i][j].character < 10) // wasn't innocent before; CHEKING LIGHTS AND NEIGHBORS
+                {
+                    if(i % 2) //even
+                    {
+                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j+1].place_type == light_on ||
+                    map[i+1][j].place_type == light_on || map[i-1][j].place_type == light_on || map[i-1][j+1].place_type == light_on ||
+                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j+1].character != 10 ||
+                    map[i+1][j].character != 10 || map[i-1][j].character != 10 || map[i-1][j+1].character != 10)
+                    {
+                        map[i][j].character += 20;
+                    }
+                    }
+                    else      // odd
+                    {
+                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j].place_type == light_on ||
+                    map[i+1][j-1].place_type == light_on || map[i-1][j-1].place_type == light_on || map[i-1][j].place_type == light_on ||
+                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j].character != 10 ||
+                    map[i+1][j-1].character != 10 || map[i-1][j-1].character != 10 || map[i-1][j].character != 10)
+                    {
+                        map[i][j].character += 20;
+                    }
+                    }
+                }
+            }
+        }
+        if(JW_x % 2) // even x
+    {                                                                //0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+            {
+                x_temp++;
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20; 
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y_temp != 0)
+            {
+                y_temp--;
+                if(map[x_temp][y_temp].character  < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 0)
+                {
+                    x_temp--;
+                    y_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y_temp != 8)
+            {
+                x_temp--;
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+    }
+    else
+    {
+        int x_temp = JW_x, y_temp = JW_y;
+        if(lantern_dir == 0)
+        {
+            while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
+            {
+                y_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 1)
+        {
+            while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+            {
+                x_temp++;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
+                {
+                    x_temp++;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 2)
+        {
+            while(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && x_temp != 12 && y_temp != 0)
+            {
+                x_temp++;
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
+                {
+                    x_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+        else if(lantern_dir == 3)
+        {
+            while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y_temp != 0)
+            {
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 4)
+        {
+            while(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && x_temp != 0 && y_temp != 0)
+            {
+                x_temp--;
+                y_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+                {
+                    x_temp--;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            return;
+        }
+        else if(lantern_dir == 5)
+        {
+            while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
+            {
+                x_temp--;
+                if(map[x_temp][y_temp].character < 10)
+                {
+                    map[x_temp][y_temp].character += 20;
+                }
+                if(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y_temp != 12)
+                {
+                    x_temp--;
+                    y_temp++;
+                    if(map[x_temp][y_temp].character < 10)
+                    {
+                        map[x_temp][y_temp].character += 20;
+                    }
+                }
+                else
+                    return;
+            }
+            return;
+        }
+
+    }
+    } //
 }
