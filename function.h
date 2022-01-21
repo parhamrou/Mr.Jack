@@ -30,7 +30,7 @@ card *second_head = NULL; // This linked list is for Mr.Jack random choose and f
 
 int round_counter = 1; // goes until it reaches to 8;
 int turn_counter = 1;  // counts turns at each round;
-bool visible_condition = true;
+int visible_condition = 1;
 int MrJack;
 int game_over = 0;
 int JW_x = 0, JW_y = 4;
@@ -67,7 +67,7 @@ void even_card_printer()
     {
         character_info_printer(temp->name);
         temp = temp->next;
-        printf("* * * * *\n");
+        printf("\t\t\t* * * * *\n");
     }
 }
 void odd_card_printer()
@@ -77,15 +77,16 @@ void odd_card_printer()
     {
         character_info_printer(temp->name);
         temp = temp->next;
-        printf("* * * * *\n");
+        printf("\t\t\t* * * * *\n");
     }
 }
 odd_round()
 { // This function is four odd rounds and calls other functions. first is inspector's turn , then two times Mr.Jack and then again inspector;
     int choose;
+    round_printer();
     map_printer();
     odd_card_printer();
-    printf("Mr Jack! what card do you choose?!\n"); // this must be repeated four times;
+    printf("\t\t\tMr Jack! what card do you choose?!\n\t\t\t"); // this must be repeated four times;
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 3, &odd_round_head); // we delete that card for the next round;
@@ -96,9 +97,10 @@ odd_round()
         return 1; // that meabs game is over; END OF TURN 1;
     }
     turn_counter = 2;
+    round_printer();
     map_printer();
     odd_card_printer();
-    printf("Inspecteur! What card do you choose?!\n");
+    printf("\t\t\tInspecteur! What card do you choose?!\n\t\t\t");
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 2, &odd_round_head);
@@ -109,9 +111,10 @@ odd_round()
         return 1;
     }
     turn_counter = 3;
+    round_printer();
     map_printer();
     odd_card_printer();
-    printf("Inspecteur! What card do you choose?!\n");
+    printf("\t\t\tInspecteur! What card do you choose?!\n\t\t\t");
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 1, &odd_round_head);
@@ -122,9 +125,10 @@ odd_round()
         return 1;
     }
     turn_counter = 4;
+    round_printer();
     map_printer();
     odd_card_printer();
-    printf("MrJack! what card do you choose?!\n"); // this must be repeated four times;
+    printf("\t\t\tMrJack! what card do you choose?!\n\t\t\t"); // this must be repeated four times;
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 0, &odd_round_head); // we delete that card for the next round;
@@ -143,16 +147,19 @@ int even_round()
         randomCard_maker_2();
         Mr_jack_CardPicker();
         system("cls");
-        printf("\t\t\t\t\t\t\t\t\t\t\tInspecteur! Don't look :))\n\t\t\t\t\t\t\t\t\t\t\tMr.Jack's card is ");
+        printf("\t\t\t\t\t\t\t\t\t\t\tPress Enter to show Mr.Jack's card...\n");
+        getchar();
+        getchar();
+        printf("\t\t\t\t\t\t\t\t\t\t\tMr.Jack's card is ");
         MrJack_card_show(MrJack);
         printf("\t\t\t\t\t\t\t\t\t\t\tPress enter to continue...\n\t\t\t\t\t\t\t\t\t\t\t");
         getchar();
-        getchar();
         MrJack_card_show(MrJack);
     }
+    round_printer();
     map_printer();
     even_card_printer();
-    printf("inspecteur! what card do you choose?!\n"); // this must be repeated four times;
+    printf("\t\t\tinspecteur! what card do you choose?!\n\t\t\t"); // this must be repeated four times;
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 3, &even_round_head); // we delete that card for the next round;
@@ -163,9 +170,10 @@ int even_round()
         return 1; // that meabs game is over; END OF TURN 1;
     }
     turn_counter = 2;
+    round_printer();
     map_printer();
     even_card_printer();
-    printf("Mr.Jack! What card do you choose?!\n");
+    printf("\t\t\tMr.Jack! What card do you choose?!\n\t\t\t");
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 2, &even_round_head);
@@ -176,9 +184,10 @@ int even_round()
         return 1;
     }
     turn_counter = 3;
+    round_printer();
     map_printer();
     even_card_printer();
-    printf("Mr.Jack! What card do you choose?!\n");
+    printf("\t\t\tMr.Jack! What card do you choose?!\n\t\t\t");
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 1, &even_round_head);
@@ -189,9 +198,10 @@ int even_round()
         return 1;
     }
     turn_counter = 4;
+    round_printer();
     map_printer();
     even_card_printer();
-    printf("inspecteur! what card do you choose?!\n"); // this must be repeated four times;
+    printf("\t\t\tinspecteur! what card do you choose?!\n\t\t\t"); // this must be repeated four times;
     scanf("%d", &choose);
     map_printer();
     card_delete(choose, 0, &even_round_head); // we delete that card for the next round;
@@ -369,42 +379,42 @@ void map_printer_place(int x, int y)
             printf("   ");
             return;
         case light_on:
-            printf("\033[1;33m");
+            printf("\033[0;33m");
             printf("O_O");
             printf("\033[0m");
             return;
         case light_off:
-            printf("\033[1;37m");
-            printf(".-.");
+            printf("\033[0;37m");
+            printf("-_-");
             printf("\033[0m");
             return;
         case house:
-            printf("\033[1;35m");
+            printf("\033[0;31m");
             printf(" H ");
             printf("\033[0m");
             return;
         case open:
-            printf("\033[1;37m");
-            printf("< >");
+            printf("\033[0;37m");
+            printf("<O>");
             printf("\033[0m");
             return;
         case close:
-            printf("\033[1;37m");
-            printf("> <");
+            printf("\033[0;37m");
+            printf(">-<");
             printf("\033[0m");
             return;
         case addition:
-            printf("\033[1;37m");
+            printf("\033[0;37m");
             printf("XXX");
             printf("\033[0m");
             return;
         case close_gate:
-            printf("\033[1;31m");
+            printf("\033[0;31m");
             printf("###");
             printf("\033[0m");
             return;
         case open_gate:
-            printf("\033[1;32m");
+            printf("\033[0;32m");
             printf("| |");
             printf("\033[0m");
             return;
@@ -415,88 +425,96 @@ void map_printer_char(int x, int y)
     switch(map[x][y].character)
     {
         case SG:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("SG ");
             printf("\033[0m");
             return;
         case SG2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("SG*");
             printf("\033[0m");
             return;
         case IL:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("IL ");
             printf("\033[0m");
             return;
         case IL2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("IL*");
             printf("\033[0m");
             return;
         case WG:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("WG ");
             printf("\033[0m");
             return;
         case WG2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("WG*");
             printf("\033[0m");
             return;
         case SH:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("SH ");
             printf("\033[0m");
             return;
         case SH2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("SH*");
             printf("\033[0m");
             return;
         case JB:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JB ");
             printf("\033[0m");
             return;
         case JB2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JB*");
             printf("\033[0m");
             return;
         case JW:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JW ");
             printf("\033[0m");
             return;
         case JW2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JW*");
             printf("\033[0m");
             return;
         case MS:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("MS ");
             printf("\033[0m");
             return;
         case MS2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("MS*");
             printf("\033[0m");
             return;
         case JS:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JS ");
             printf("\033[0m");
             return;
         case JS2:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("JS*");
             printf("\033[0m");
             return;
         case 10:
-            printf("\033[0;37m");
+            printf("\033[1;34m");
             printf("   ");
+            printf("\033[0m");
+            return;
+    }
+    switch(map[x][y].place_type)
+    {
+        case addition:
+            printf("\033[0;37m");
+            printf("XXX");
             printf("\033[0m");
             return;
     }
@@ -562,6 +580,7 @@ int multiplay()
             squad_head = NULL;
             even_round_head = NULL;
             odd_round_head = NULL;
+            map_printer();
         }
         else
         {
@@ -576,50 +595,50 @@ void character_info_printer(int card)
     switch (card)
     {
     case 0:
-        printf("0.SG:\n");
-        printf("1 To 3 moves And Ability Use (whistle)\n");
+        printf("\t\t\t0.SG:\t");
+        printf("1 To 3 moves And Ability Use (whistle)\t");
         printf("He can make other characters 3 moves closer to himself\n");
         break;
 
     case 1:
-        printf("1.IL:\n");
-        printf("1 To 3 Moves And Ability Use\n");
+        printf("\t\t\t1.IL:\t");
+        printf("1 To 3 Moves And Ability Use\t");
         printf("He can free one of the exits and block another one\n");
         break;
 
     case 2:
-        printf("2.WG:\n");
-        printf("1 To 3 Moves Or Ability Use\n");
+        printf("\t\t\t2.WG:\t");
+        printf("1 To 3 Moves Or Ability Use\t");
         printf("Instead of moving, He can changes his place with another character\n");
         break;
 
     case 3:
-        printf("3.SH:\n");
-        printf("1 to 3 Moves then ability use\n");
+        printf("\t\t\t3.SH:\t");
+        printf("1 to 3 Moves then ability use\t");
         printf("He can draw the the top card from the alibi pile and note the character\n");
         break;
 
     case 4:
-        printf("4.JB:\n");
-        printf("1 To 3 Moves And Ability Use\n");
+        printf("\t\t\t4.JB:\t");
+        printf("1 To 3 Moves And Ability Use\t");
         printf("He can open a manhole and closes another\n");
         break;
 
     case 5:
-        printf("5.JW:\n");
-        printf("1 To 3 Moves Then Ability Use\n");
+        printf("\t\t\t5.JW:\t");
+        printf("1 To 3 Moves Then Ability Use\t");
         printf("Watson carries a lantern, pictured on his character token. This lantern illuminates all the characters standing straight ahead of him!\n");
         break;
 
     case 6:
-        printf("6.MS:\n");
-        printf("1 To 4 Moves With Optional Ability Use\n");
+        printf("\t\t\t6.MS:\t");
+        printf("1 To 4 Moves With Optional Ability Use\t");
         printf("She can cross any hex but she must stop her movement on a street hex\n");
         break;
 
     case 7:
-        printf("7.JS:\n");
-        printf(" 1 To 3 Moves And Ability Use\n");
+        printf("\t\t\t7.JS:\t");
+        printf("1 To 3 Moves And Ability Use\t");
         printf("He turns off a light and turn on another light\n");
         break;
     }
@@ -628,9 +647,9 @@ void round_printer()
 { //This function prints round and can Mr.Jack escape or not;
     printf("round %d\n", round_counter);
     if (visible_condition)
-        printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMr.Jack is not visible and can escape this round!\n");
+        printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMr.Jack is visible and can't escape this round!\n");
     else
-        printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMr.jack is visible and can't escape! this round\n");
+        printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMr.jack is not visible and can escape this round!\n");
 }
 void first_place_set()
 {
@@ -870,13 +889,13 @@ void MrJack_card_show(int number)
 void SG_func(int x, int y)
 { // there is a bug here. if he can't make a character closer?
     int choice, temp, action_time;
-    printf("You want to do your action   1.before moving   or   2.after?\n");
+    printf("\t\t\tYou want to do your action   1.before moving   or   2.after?\n\t\t\t");
     scanf("%d", &action_time);
     map_printer();
     int x_, y_, x__, y__;
     if (action_time == 2)
     {
-        printf("How many hexes do you want to move?!\n");
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -908,11 +927,12 @@ void SG_func(int x, int y)
         for (int i = 0; i < 3; i++)
         {
             int tmp;
-            printf("Which character do you want to make closer?!\n");
+            printf("\t\t\tWhich character do you want to make closer?!\n\t\t\t");
             for (int j = 1; j < 8; j++)
             {
                 printf("%d. ", j);
                 MrJack_card_show(j);
+                printf("\t\t\t");
             }
             scanf("%d", &tmp);
             map_printer();
@@ -926,18 +946,19 @@ void SG_func(int x, int y)
         for (int i = 0; i < 3; i++)
         {
             int tmp;
-            printf("Which character do you want to make closer?!\n");
+            printf("\t\t\tWhich character do you want to make closer?!\n\t\t\t");
             for (int j = 1; j < 8; j++)
             {
                 printf("%d. ", j);
                 MrJack_card_show(j);
+                printf("\t\t\t");
             }
             scanf("%d", &tmp);
             map_printer();
             SG_action1(tmp, x, y);
             map_printer();
         }
-        printf("How many hexes do you want to move?!\n");
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -970,7 +991,7 @@ void IL_func(int x, int y)
 {
     int choice, temp;
     int x_, y_, x__, y__;
-    printf("How many hexes do you want to move?!\n");
+    printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
     scanf("%d", &choice);
     map_printer();
     for (int i = 0; i < choice; i++)
@@ -998,28 +1019,27 @@ void IL_func(int x, int y)
             continue;
         }
     }
-    printf("which gate do you want to open?\n");
+    printf("\t\t\twhich gate do you want to open?\n\t\t\t");
     show_close_gates();
     printf("Enter mokhtasat: ");
     scanf("%d %d", &x_, &y_);
     map_printer();
-    printf("Which gate do you want to close?\n");
+    printf("\t\t\tWhich gate do you want to close?\n\t\t\t");
     show_open_gates();
     printf("Enter nokhtasat: ");
     scanf("%d %d", &x__, &y__);
-    map_printer();
     swap_gates(x_, y_, x__, y__);
     return;
 }
 void WG_func(int x, int y)
 {
     int choice, temp, action_time;
-    printf("You want to   1. do your action   or    2. move?!");
+    printf("\t\t\tYou want to   1. do your action   or    2. move?!\t\t\t");
     scanf("%d", &action_time);
     map_printer();
     if (action_time == 2)
     {
-        printf("How many hexes do you want to move?!\n");
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -1052,10 +1072,9 @@ void WG_func(int x, int y)
     else
     {
         int tmp;
-        printf("which character do you want to change your hex with?!\n");
+        printf("\t\t\twhich character do you want to change your hex with?!\n");
         WG_character_choice(2);
         scanf("%d", &tmp);
-        map_printer();
         WG_character_change(x, y, tmp);
         return;
     }
@@ -1064,7 +1083,7 @@ void SH_func(int x, int y)
 {
     int choice, temp;
     int x_, y_, x__, y__;
-    printf("How many hexes do you want to move?!\n");
+    printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
     scanf("%d", &choice);
     map_printer();
     for (int i = 0; i < choice; i++)
@@ -1098,13 +1117,13 @@ void SH_func(int x, int y)
 void JB_func(int x, int y)
 {
     int choice, temp, action_time;
-    printf("You want to do your action   1.before moving   or    2.after?\n");
+    printf("\t\t\tYou want to do your action   1.before moving   or    2.after?\n\t\t\t");
     scanf("%d", &action_time);
     map_printer();
     int x_, y_, x__, y__;
     if (action_time == 2)
     {
-        printf("How many hexes do you want to move?!\n");
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -1132,33 +1151,32 @@ void JB_func(int x, int y)
                 continue;
             }
         }
-        printf("which manhole do you want to open?\n");
+        printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
         show_close_manholes();
         printf("Enter mokhtasat: ");
         scanf("%d %d", &x_, &y_);
         map_printer();
-        printf("Which manhole do you want to close?\n");
+        printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
         show_open_manholes();
         printf("Enter nokhtasat: ");
         scanf("%d %d", &x__, &y__);
-        map_printer();
         swap_manholes(x_, y_, x__, y__);
         return;
     }
     else
     {
-        printf("which manhole do you want to open?\n");
+        printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
         show_close_manholes();
         printf("Enter mokhtasat: ");
         scanf("%d %d", &x_, &y_);
         map_printer();
-        printf("Which manhole do you want to close?\n");
+        printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
         show_open_manholes();
-        printf("Enter nokhtasat: ");
+        printf("\t\t\tEnter nokhtasat: ");
         scanf("%d %d", &x__, &y__);
-        map_printer();
         swap_manholes(x_, y_, x__, y__);
-        printf("How many hexes do you want to move?!\n");
+        map_printer();
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -1191,7 +1209,7 @@ void JW_func(int x, int y)
 {
     int choice, temp;
     int x_, y_, x__, y__;
-    printf("How many hexes do you want to move?!\n");
+    printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
     scanf("%d", &choice);
     map_printer();
     for (int i = 0; i < choice; i++)
@@ -1227,7 +1245,7 @@ void JW_func(int x, int y)
 void MS_func(int x, int y)
 {
     int choice, temp, passed = 100;
-    printf("How many hexes do you want to move?!\n");
+    printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
     scanf("%d", &choice);
     map_printer();
     for (int i = 0; i < choice; i++)
@@ -1261,13 +1279,13 @@ void MS_func(int x, int y)
 void JS_func(int x, int y)
 {
     int choice, temp, action_time;
-    printf("You want to do your action    1.before moving    or     2.after?\n");
+    printf("\t\t\tYou want to do your action    1.before moving    or     2.after? ");
     scanf("%d", &action_time);
     map_printer();
     int x_, y_, x__, y__;
     if (action_time == 2)
     {
-        printf("How many hexes do you want to move?!\n");
+        printf("\t\t\tHow many hexes do you want to move?! ");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -1295,33 +1313,32 @@ void JS_func(int x, int y)
                 continue;
             }
         }
-        printf("which light do you want to turn on?\n");
+        printf("\t\t\twhich light do you want to turn on?\n\t\t\t");
         show_off_lights();
         printf("Enter mokhtasat: ");
         scanf("%d %d", &x_, &y_);
         map_printer();
-        printf("Which light do you want to turn off?\n");
+        printf("\t\t\tWhich light do you want to turn off?\n\t\t\t");
         show_on_lights();
         printf("Enter nokhtasat: ");
         scanf("%d %d", &x__, &y__);
-        map_printer();
         swap_lights(x_, y_, x__, y__);
         return;
     }
     else
     {
-        printf("which light do you want to turn on?\n");
+        printf("\t\t\twhich light do you want to turn on?\n\t\t\t");
         show_off_lights();
         printf("Enter mokhtasat: ");
         scanf("%d %d", &x_, &y_);
         map_printer();
-        printf("Which light do you want to turn off?\n");
+        printf("\t\t\tWhich light do you want to turn off?\n\t\t\t");
         show_on_lights();
         printf("Enter nokhtasat: ");
         scanf("%d %d", &x__, &y__);
-        map_printer();
         swap_lights(x_, y_, x__, y__);
-        printf("How many hexes do you want to move?!\n");
+        map_printer();
+        printf("\t\t\tHow many hexes do you want to move?!\n\t\t\t");
         scanf("%d", &choice);
         map_printer();
         for (int i = 0; i < choice; i++)
@@ -1381,6 +1398,8 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("1. North  ");
         }
@@ -1406,8 +1425,10 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
-                printf("2. south");
+                printf("2. south   ");
         }
     }
     if (x != 12 && y != 8)
@@ -1426,6 +1447,8 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("3. North-East  ");
         }
@@ -1446,6 +1469,8 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("4. South-East  ");
         }
@@ -1466,6 +1491,8 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("5. South-West  ");
         }
@@ -1486,6 +1513,8 @@ int even_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("6. North-West  ");
         }
@@ -1649,6 +1678,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("1. North  ");
         }
@@ -1669,6 +1700,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("2. South  ");
         }
@@ -1689,6 +1722,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("3. North-East  ");
         }
@@ -1709,6 +1744,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("4. South-East  ");
         }
@@ -1729,6 +1766,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("5.South-West  ");
         }
@@ -1749,6 +1788,8 @@ int odd_x_moves(int *x_, int *y_, int passed)
             }
             break;
         case house:
+        case light_off:
+        case light_on:
             if (passed == 100)
                 printf("6.North-West  ");
         }
@@ -1896,7 +1937,7 @@ void show_close_manholes()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == close)
-                printf("manhole[%d][%d]\n", i, j);
+                printf("manhole[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1907,7 +1948,7 @@ void show_open_manholes()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == open)
-                printf("manhole[%d][%d]\n", i, j);
+                printf("manhole[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1923,7 +1964,7 @@ void manhole_move()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == open && map[i][j].character == 10)
-                printf("manhole[%d][%d]\n", i, j);
+                printf("manhole[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1934,7 +1975,7 @@ void show_off_lights()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == light_off)
-                printf("light[%d][%d]\n", i, j);
+                printf("light[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1945,7 +1986,7 @@ void show_on_lights()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == light_on)
-                printf("light[%d][%d]\n", i, j);
+                printf("light[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1961,7 +2002,7 @@ void show_open_gates()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == open_gate)
-                printf("gate[%d][%d]\n", i, j);
+                printf("gate[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1972,7 +2013,7 @@ void show_close_gates()
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].place_type == close_gate)
-                printf("gate[%d][%d]\n", i, j);
+                printf("gate[%d][%d]\n\t\t\t", i, j);
         }
     }
 }
@@ -1987,7 +2028,7 @@ void WG_character_choice(int number)
     {
         if (i != number)
         {
-            printf("%d.", i);
+            printf("\t\t\t%d.", i);
             MrJack_card_show(i);
         }
     }
@@ -2004,6 +2045,10 @@ void WG_character_change(int x, int y, int number)
                 x_ = i;
                 y_ = j;
                 swap_characters(x, y, x_, y_);
+                if(number == JW || number == JW2){
+                    JW_x = x;
+                    JW_y = y;
+                }
                 return;
             }
         }
@@ -2032,9 +2077,12 @@ void SH_action()
         temp = temp->next;
     }
     int random = temp->name;
-    printf("The card is: ");
+    printf("\t\t\tPress enter to show the card\n\t\t\t");
+    getchar();
+    getchar();
+    printf("\t\t\tThe card is: ");
     MrJack_card_show(random);
-    printf("Press enter to continue...\n");
+    printf("\t\t\tPress enter to continue...\n\t\t\t");
     getchar();
     card_delete(random, counter - 1, &second_head);
     return;
@@ -2253,8 +2301,8 @@ void SG_odd(int x, int y, int x_, int y_)
     }
 }
 JW_action(){
-    printf("Which direction would you like the lantern to be?\n");
-    printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n");
+    printf("\t\t\tWhich direction would you like the lantern to be?\n\t\t\t");
+    printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n\t\t\t");
     scanf("%d", &lantern_dir);
     map_printer();
     return;
@@ -2272,6 +2320,7 @@ void visible()
             {
                 x = i;
                 y = j;
+                
                 temp = 1;
                 break;
             }
@@ -2281,25 +2330,31 @@ void visible()
     }
     if(x % 2) // even x; FOR CHEKING LIGHTS AND NEIGHBOR CHARACTERS;
     {
-        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y+1].place_type == light_on ||
-            map[x+1][y].place_type == light_on || map[x-1][y].place_type == light_on || map[x-1][y+1].place_type == light_on ||
-            map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y+1].character != 10 ||
-            map[x+1][y].character != 10 || map[x-1][y].character != 10 || map[x-1][y+1].character != 10)
-            visible_condition = true;
+        if((map[x][y+1].place_type == light_on && y != 8) || (map[x][y-1].place_type == light_on && y != 0) || (map[x+1][y+1].place_type == light_on && x != 12 && y != 8) ||
+            (map[x+1][y].place_type == light_on && x != 12) || (map[x-1][y].place_type == light_on && x != 0) || (map[x-1][y+1].place_type == light_on && x != 0 && y != 8) ||
+            (map[x][y+1].character != 10 && y != 8) || (map[x][y-1].character != 10 && y != 0) || (map[x+1][y+1].character != 10 && x != 12 && y != 8) ||
+            (map[x+1][y].character != 10 && x != 12) || (map[x-1][y].character != 10 && x != 0) || (map[x-1][y+1].character != 10 && x != 0 && y != 8))
+            {
+            visible_condition = 1;
+            
             flag = 1;
+            }
     }
     else
     {
-        if(map[x][y+1].place_type == light_on || map[x][y-1].place_type == light_on || map[x+1][y].place_type == light_on ||
-           map[x+1][y-1].place_type == light_on || map[x-1][y-1].place_type == light_on || map[x-1][y].place_type == light_on ||
-           map[x][y+1].character != 10 || map[x][y-1].character != 10 || map[x+1][y].character != 10 ||
-           map[x+1][y-1].character != 10 || map[x-1][y-1].character != 10 || map[x-1][y].character != 10)
-            visible_condition = true;
+        if((map[x][y+1].place_type == light_on && y != 8) || (map[x][y-1].place_type == light_on && y != 0) || (map[x+1][y].place_type == light_on && x != 12) ||
+           (map[x+1][y-1].place_type == light_on && x != 12 && y != 0) || (map[x-1][y-1].place_type == light_on && x != 0 && y != 0) || (map[x-1][y].place_type == light_on && x != 0) ||
+           (map[x][y+1].character != 10 && y != 8) || (map[x][y-1].character != 10 && y != 0) || (map[x+1][y].character != 10 && x != 12) ||
+           (map[x+1][y-1].character != 10 && x != 12 && y != 0) || (map[x-1][y-1].character != 10 && x != 0 && y != 0) || (map[x-1][y].character != 10 && x != 0))
+           {
+            visible_condition = 1;
+            
             flag = 1;
+           }
     }
     if(flag == 1) // cheking if MrJack is found or not;
     {
-        visible2(1);
+        visible2();
         return;
     }
     if(JW_x % 2) // even x
@@ -2310,16 +2365,19 @@ void visible()
             while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
             {
                 y_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 1)
@@ -2328,33 +2386,39 @@ void visible()
             {
                 x_temp++;
                 y_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
                 {
                     x_temp++;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible2();
+            visible_condition = 0;
+            
             return;
         }
         else if(lantern_dir == 2)
@@ -2362,33 +2426,39 @@ void visible()
             while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
             {
                 x_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp + 1][y_temp - 1].place_type != house && map[x_temp + 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 12)
                 {
                     x_temp++;
                     y_temp--;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else{
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 3)
@@ -2396,16 +2466,19 @@ void visible()
             while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
             {
                 y--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 4)
@@ -2413,34 +2486,40 @@ void visible()
             while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
             {
                 x_temp--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp - 1][y_temp - 1].place_type != house && map[x_temp - 1][y_temp - 1].place_type != addition && y_temp != 0 && x_temp != 0)
                 {
                     x_temp--;
                     y_temp--;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 5)
@@ -2449,33 +2528,39 @@ void visible()
             {
                 x_temp--;
                 y_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
                 {
                     x_temp--;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
     }
@@ -2487,16 +2572,19 @@ void visible()
             while(map[x_temp][y_temp + 1].place_type != house && map[x_temp][y_temp + 1].place_type != addition && y_temp != 8)
             {
                 y_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 1)
@@ -2504,34 +2592,40 @@ void visible()
             while(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
             {
                 x_temp++;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp + 1][y_temp + 1].place_type != house && map[x_temp + 1][y_temp + 1].place_type != addition && y_temp != 8 && x_temp != 12)
                 {
                     x_temp++;
                     y_temp++;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 2)
@@ -2540,32 +2634,38 @@ void visible()
             {
                 x_temp++;
                 y_temp--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp + 1][y_temp].place_type != house && map[x_temp + 1][y_temp].place_type != addition && x_temp != 12)
                 {
                     x_temp++;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else{
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible2();
+            visible_condition = 0;
+            
             return;
         }
         else if(lantern_dir == 3)
@@ -2573,16 +2673,19 @@ void visible()
             while(map[x_temp][y_temp - 1].place_type != house && map[x_temp][y_temp - 1].place_type != addition && y != 0)
             {
                 y_temp--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 4)
@@ -2591,33 +2694,39 @@ void visible()
             {
                 x_temp--;
                 y_temp--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
                 {
                     x_temp--;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible_condition = 0;
+            
+            visible2();
             return;
         }
         else if(lantern_dir == 5)
@@ -2625,45 +2734,52 @@ void visible()
             while(map[x_temp - 1][y_temp].place_type != house && map[x_temp - 1][y_temp].place_type != addition && x_temp != 0)
             {
                 x_temp--;
+                
                 if(map[x_temp][y_temp].character == MrJack)
                 {
-                    visible_condition = true;
+                    
+                    visible_condition = 1;
                     flag = 1;
-                    visible2(1);
+                    visible2();
                     return;
                 }
                 if(map[x_temp - 1][y_temp + 1].place_type != house && map[x_temp - 1][y_temp + 1].place_type != addition && x_temp != 0 && y != 12)
                 {
                     x_temp--;
                     y_temp++;
+                    
                     if(map[x_temp][y_temp].character == MrJack)
                     {
-                        visible_condition = true;
+                        
+                        visible_condition = 1;
                         flag = 1;
-                        visible2(1);
+                        visible2();
                         return;
                     }
                 }
                 else
                 {
-                    visible2(0);
-                    visible_condition = false;
+                    visible_condition = 0;
+                    
+                    visible2();
                     return;
                 }
             }
-            visible2(0);
-            visible_condition = false;
+            visible2();
+            visible_condition = 0;
+            
             return;
         }
 
     } //*
-    visible_condition = false;
-    visible2(0);
+    visible_condition = 0;
+    
+    visible2();
     return;
 }
-void visible2(int number) 
+void visible2() 
 {
-    if(number) // MrJack is visible;
+    if(visible_condition) // MrJack is visible;
     {
         int array[30];
         int x = 0;
@@ -2679,10 +2795,10 @@ void visible2(int number)
                 {
                     if(i % 2) //even
                     {
-                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j+1].place_type == light_on ||
-                    map[i+1][j].place_type == light_on || map[i-1][j].place_type == light_on || map[i-1][j+1].place_type == light_on ||
-                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j+1].character != 10 ||
-                    map[i+1][j].character != 10 || map[i-1][j].character != 10 || map[i-1][j+1].character != 10)
+                    if((map[i][j+1].place_type == light_on && j != 8) || (map[i][j-1].place_type == light_on && j != 0) || (map[i+1][j+1].place_type == light_on && i != 12 && j != 8) ||
+                    (map[i+1][j].place_type == light_on && i != 12) || (map[i-1][j].place_type == light_on && i != 0) || (map[i-1][j+1].place_type == light_on && i != 0 && j != 8) ||
+                    (map[i][j+1].character != 10 && j != 8) || (map[i][j-1].character != 10 && j != 0) || (map[i+1][j+1].character != 10 && i != 12 && j != 8) ||
+                    (map[i+1][j].character != 10 && i != 12) || (map[i-1][j].character != 10 && i != 0) || (map[i-1][j+1].character != 10 && i != 0 && j != 8))
                     {
                         array[x] = map[i][j].character;
                         x++;
@@ -2690,10 +2806,10 @@ void visible2(int number)
                     }
                     else      // odd
                     {
-                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j].place_type == light_on ||
-                    map[i+1][j-1].place_type == light_on || map[i-1][j-1].place_type == light_on || map[i-1][j].place_type == light_on ||
-                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j].character != 10 ||
-                    map[i+1][j-1].character != 10 || map[i-1][j-1].character != 10 || map[i-1][j].character != 10)
+                    if((map[i][j+1].place_type == light_on && j != 8) || (map[i][j-1].place_type == light_on && j != 0) || (map[i+1][j].place_type == light_on && i != 12) ||
+                    (map[i+1][j-1].place_type == light_on && i != 12 && j != 0) || (map[i-1][j-1].place_type == light_on && i != 0 && j != 0) || (map[i-1][j].place_type == light_on && i != 0) ||
+                    (map[i][j+1].character != 10 && j != 8) || (map[i][j-1].character != 10 && j != 0) || (map[i+1][j].character != 10 && i != 12) ||
+                    (map[i+1][j-1].character != 10 && i != 12 && j != 0) || (map[i-1][j-1].character != 10 && i != 0 && j != 0) || (map[i-1][j].character != 10 && i != 0))
                     {
                         array[x] = map[i][j].character;
                         x++;
@@ -2997,20 +3113,20 @@ void visible2(int number)
                 {
                     if(i % 2) //even
                     {
-                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j+1].place_type == light_on ||
-                    map[i+1][j].place_type == light_on || map[i-1][j].place_type == light_on || map[i-1][j+1].place_type == light_on ||
-                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j+1].character != 10 ||
-                    map[i+1][j].character != 10 || map[i-1][j].character != 10 || map[i-1][j+1].character != 10)
+                    if((map[i][j+1].place_type == light_on && j != 8) || (map[i][j-1].place_type == light_on && j != 0) || (map[i+1][j+1].place_type == light_on && i != 12 && j != 8) ||
+                    (map[i+1][j].place_type == light_on && i != 12) || (map[i-1][j].place_type == light_on && i != 0) || (map[i-1][j+1].place_type == light_on && i != 0 && j != 8) ||
+                    (map[i][j+1].character != 10 && j != 8) || (map[i][j-1].character != 10 && j != 0) || (map[i+1][j+1].character != 10 && i != 12 && j != 8) ||
+                    (map[i+1][j].character != 10 && i != 12) || (map[i-1][j].character != 10 && i != 0) || (map[i-1][j+1].character != 10 && i != 0 && j != 8))
                     {
                         map[i][j].character += 20;
                     }
                     }
                     else      // odd
                     {
-                    if(map[i][j+1].place_type == light_on || map[i][j-1].place_type == light_on || map[i+1][j].place_type == light_on ||
-                    map[i+1][j-1].place_type == light_on || map[i-1][j-1].place_type == light_on || map[i-1][j].place_type == light_on ||
-                    map[i][j+1].character != 10 || map[i][j-1].character != 10 || map[i+1][j].character != 10 ||
-                    map[i+1][j-1].character != 10 || map[i-1][j-1].character != 10 || map[i-1][j].character != 10)
+                    if((map[i][j+1].place_type == light_on && j != 8) || (map[i][j-1].place_type == light_on && j != 0) || (map[i+1][j].place_type == light_on && i != 12) ||
+                    (map[i+1][j-1].place_type == light_on && i != 12 && j != 0) || (map[i-1][j-1].place_type == light_on && i != 0 && j != 0) || (map[i-1][j].place_type == light_on && i != 0) ||
+                    (map[i][j+1].character != 10 && j != 8) || (map[i][j-1].character != 10 && j != 0) || (map[i+1][j].character != 10 && i != 12) ||
+                    (map[i+1][j-1].character != 10 && i != 12 && j != 0) || (map[i-1][j-1].character != 10 && i != 0 && j != 0) || (map[i-1][j].character != 10 && i != 0))
                     {
                         map[i][j].character += 20;
                     }
