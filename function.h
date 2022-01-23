@@ -2037,7 +2037,6 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
             if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || (!(round_counter % 2) && (turn_counter == 1 || turn_counter == 4))) && passed == MrJack)
             {
                 printf("20. run away!  ");
-                printf("x = %d y = %d   ", x, y);
                 array[counter] = 20;
                 counter++;
             }
