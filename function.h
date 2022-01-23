@@ -591,7 +591,7 @@ int menu()
 {
     printf("\033[1;32m");
     int choice;
-    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.Play with a friend\n\t\t\t\t\t\t\t\t\t\t\t2.Info\n\t\t\t\t\t\t\t\t\t\t\t0.exit\n");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Info\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
     printf("\t\t\t\t\t\t\t\t\t\t\tEnter your choice:\n\t\t\t\t\t\t\t\t\t\t\t");
     scanf("%d", &choice);
     switch (choice)
@@ -2036,6 +2036,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
         case open_gate:
             if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || (!(round_counter % 2) && (turn_counter == 1 || turn_counter == 4))) && passed == MrJack)
             {
+                printf("x = %d y = %d\n", x, y); ///////
                 printf("20. run away!  ");
                 array[counter] = 20;
                 counter++;
@@ -4207,4 +4208,5 @@ void SG_error()
     getchar();
     getchar();
 }
+
 // by Parham Roufarshbaf
