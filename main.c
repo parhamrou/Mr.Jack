@@ -15,6 +15,10 @@ int main(){
             continue;
         else if(temp == 0)
             break;
+        else if(temp == 3)
+            continue;
+        else if(temp == 4)
+            continue;
         else if(temp == 2)
             continue;
         else if(temp == -1)

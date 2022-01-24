@@ -590,14 +590,14 @@ int map_loader()
 int menu()
 {
     printf("\033[1;32m");
-    int choice;
-    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Info\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
+    int choice, temp;
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Save\n\t\t\t\t\t\t\t\t\t\t\t3.Load\n\t\t\t\t\t\t\t\t\t\t\t4.Info\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
     printf("\t\t\t\t\t\t\t\t\t\t\tEnter your choice:\n\t\t\t\t\t\t\t\t\t\t\t");
     scanf("%d", &choice);
     switch (choice)
     {
     case 1:
-        multiplay();
+        multiplay(1);
         printf("\033[1;32m");
         printf("\n\t\t\tPress Enter to back to menu...\n");
         getchar();
@@ -606,12 +606,47 @@ int menu()
     case 0:
         return 0;
     case 2:
+        save();
+        printf("\033[1;32m");
+        system("cls");
+        printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tThe game is saved Now!\n\t\t\t\t\t\t\t\t\t\t\tPress Enter to back to menu...\n\t\t\t");
+        getchar();
+        getchar();
+        return 2;
+    case 3:
+        temp = load();
+        printf("temp is %d\n", temp);
+        switch(temp)
+        {
+            case 3:
+                multiplay(3);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
+            case 5:
+                multiplay(5);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
+            case 7:
+                multiplay(7);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
+        }
+    case 4:
         info();
         printf("\033[1;32m");
         printf("\n\t\t\t\t\t\t\t\t\t\t\tPress Enter to back to menu...\n\t\t\t\t\t\t\t\t\t\t\t");
         getchar();
         getchar();
-        return 2;
+        return 4;
     default:
         printf("\033[1;32m");
         system("cls");
@@ -629,15 +664,35 @@ void info()
     printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tDeveloper: Parham Roufarshbaf");
     printf("\n\t\t\t\t\t\t\t\t\t\t\tWinter 2022");
 }
-int multiplay()
+int multiplay(int number)
 { // multiplay game happens here ;)
     printf("\033[1;32m");
     int result = -1;
     for (int i = 0; i < 4; i++)
     {
-        if (i == 0)
+        if (i == 0 && number == 1)
         {
             prepare_game();
+        }
+        else
+        {
+            if(number == 3)
+            {
+                number = -1;
+                continue;
+            }
+            else if(number == 5)
+            {
+                i = 1;
+                number = -1;
+                continue;
+            }
+            else if(number == 7)
+            {
+                number = -1;
+                i = 2;
+                continue;
+            }
         }
         result = even_round();
         if (result == 1)
@@ -658,6 +713,11 @@ int multiplay()
         {
             visible();
             round_counter++;
+            int tmp = menu_q();
+            if(tmp == 2)
+            {
+                return 2;
+            }
             squad_head = NULL;
             even_round_head = NULL;
             odd_round_head = NULL;
@@ -1141,8 +1201,8 @@ void SG_func(int x, int y)
                 }
                 scanf("%d", &tmp);
                 u++;
-            } while(!(tmp > 0 && tmp < 8));
                 map_printer();
+            } while(!(tmp > 0 && tmp < 8));
                 res = SG_action1(tmp, x, y);
                 z++;
             } while(res == -1);
@@ -1184,7 +1244,8 @@ void SG_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
             else
             {
@@ -1205,7 +1266,8 @@ void SG_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
         }
         return;
@@ -1349,7 +1411,8 @@ void WG_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
                 continue;
             }
             else
@@ -1371,7 +1434,8 @@ void WG_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
                 continue;
             }
         }
@@ -1609,7 +1673,8 @@ void JB_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
             else
             {
@@ -1630,7 +1695,8 @@ void JB_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
         }
         return;
@@ -1752,7 +1818,8 @@ void MS_func(int x, int y)
                 game_over = 1;
                 return;
             }
-            map_printer();
+            if(i != choice - 1)
+                map_printer();
             continue;
         }
         else
@@ -1774,7 +1841,8 @@ void MS_func(int x, int y)
                 game_over = 1;
                 return;
             }
-            map_printer();
+            if(i != choice - 1)
+                map_printer();
             continue;
         }
     }
@@ -1928,7 +1996,8 @@ void JS_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
             else
             {
@@ -1949,7 +2018,8 @@ void JS_func(int x, int y)
                     game_over = 1;
                     return;
                 }
-                map_printer();
+                if(i != choice - 1)
+                    map_printer();
             }
         }
         return;
@@ -4208,5 +4278,116 @@ void SG_error()
     getchar();
     getchar();
 }
-
+void save()
+{
+    char temp[3];
+    char t_load[10] = "load";
+    system("cls");
+    printf("\033[1;32m");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tWhich one do you want to save in?!\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("1.load1.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("2.load2.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("3.load3.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("4.load4.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    scanf(" %s", temp);
+    strcat(t_load, temp);
+    strcat(t_load, ".bin");
+    FILE *fp = fopen(t_load, "wb");
+    if(fp == NULL)
+    {
+        printf("\n\t\t\t\t\t\t\t\t\t\t\tCan't save the file!\n");
+        return;
+    }
+    fwrite(&MrJack, sizeof(int), 1, fp);
+    fwrite(&visible_condition, sizeof(int), 1, fp);
+    fwrite(&game_over, sizeof(int), 1, fp);
+    fwrite(&round_counter, sizeof(int), 1, fp);
+    fwrite(&JW_x, sizeof(int), 1, fp);
+    fwrite(&JW_y, sizeof(int), 1, fp);
+    card *tmp = second_head;
+    int counter = 0;
+    while(tmp != NULL)
+    {
+        tmp = tmp->next;
+        counter++; // find out size of linked list
+    }
+    fwrite(&counter, sizeof(int), 1, fp);
+    tmp = second_head;
+    for(int i = 0; i < counter; i++)
+    {
+        fwrite(&tmp->name, sizeof(int), 1, fp);
+        tmp = tmp->next;
+    }
+    fwrite(&map, sizeof(map), 1, fp);
+    fclose(fp);
+}
+int load()
+{
+    squad_head = NULL;
+    even_round_head = NULL;
+    odd_round_head = NULL;
+    second_head = NULL;
+    turn_counter = 1;
+    int counter;
+    char temp[3];
+    char t_load[10] = "load";
+    printf("\033[1;32m");
+    system("cls");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tWhich one do you want to load?!\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("1.load1.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("2.load2.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("3.load3.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("4.load4.bin\n\t\t\t\t\t\t\t\t\t\t\t");
+    scanf(" %s", temp);
+    strcat(t_load, temp);
+    strcat(t_load, ".bin");
+    FILE *fp = fopen(t_load, "rb");
+    if(fp == NULL)
+    {
+        printf("\n\t\t\t\t\t\t\t\t\t\t\tCan't save the file!\n");
+        return 0;
+    }
+    fread(&MrJack, sizeof(int), 1, fp);
+    fread(&visible_condition, sizeof(int), 1, fp);
+    fread(&game_over, sizeof(int), 1, fp);
+    fread(&round_counter, sizeof(int), 1, fp);
+    fread(&JW_x, sizeof(int), 1, fp);
+    fread(&JW_y, sizeof(int), 1, fp);
+    fread(&counter, sizeof(int), 1, fp);
+    for(int i = 0; i < counter; i++)
+    {
+        card *tmp, *new_node;
+        new_node = (card *) malloc(sizeof(card));
+        fread(&new_node -> name, sizeof(int), 1, fp);
+        printf(" i = %d name = %d\n", i, new_node -> name);
+        new_node -> next = NULL;
+        if(second_head == NULL)
+        {
+            second_head = tmp = new_node;
+        }
+        else
+        {
+            tmp -> next = new_node;
+            tmp = new_node;
+        }
+    }
+    fread(&map, sizeof(map), 1, fp);
+    fclose(fp);
+    system("cls");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tThe game is loaded\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("Press Enter to start the game...\n\t\t\t\t\t\t\t\t\t\t\t");
+    getchar();
+    getchar();
+    return round_counter;
+}
+int menu_q()
+{
+    int choice;
+    map_printer();
+    printf("\033[0;32m");
+    printf("\t\t\tDo you want to 1. continue    2. Back to menu?!\n\t\t\t");
+    scanf("%d", &choice);
+    if(choice == 2)
+        return 2;
+}
 // by Parham Roufarshbaf
