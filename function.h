@@ -434,8 +434,8 @@ void map_printer_place(int x, int y)
         printf("\033[0m");
         return;
     case light_off:
-        printf("\033[0;37m");
-        printf("-_-");
+        printf("\033[1;37m");
+        printf("*_*");
         printf("\033[0m");
         return;
     case house:
@@ -444,12 +444,12 @@ void map_printer_place(int x, int y)
         printf("\033[0m");
         return;
     case open:
-        printf("\033[0;37m");
+        printf("\033[1;37m");
         printf("<O>");
         printf("\033[0m");
         return;
     case close:
-        printf("\033[0;37m");
+        printf("\033[1;37m");
         printf(">-<");
         printf("\033[0m");
         return;
@@ -555,6 +555,7 @@ void map_printer_char(int x, int y)
         printf("\033[0m");
         return;
     case 10:
+    case -1:
         printf("\033[1;34m");
         printf("   ");
         printf("\033[0m");
@@ -591,7 +592,7 @@ int menu()
 {
     printf("\033[1;32m");
     int choice, temp;
-    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Save\n\t\t\t\t\t\t\t\t\t\t\t3.Load\n\t\t\t\t\t\t\t\t\t\t\t4.Info\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Save\n\t\t\t\t\t\t\t\t\t\t\t3.Load\n\t\t\t\t\t\t\t\t\t\t\t4.Info\n\t\t\t\t\t\t\t\t\t\t\t5.about game\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
     printf("\t\t\t\t\t\t\t\t\t\t\tEnter your choice:\n\t\t\t\t\t\t\t\t\t\t\t");
     scanf("%d", &choice);
     switch (choice)
@@ -647,6 +648,13 @@ int menu()
         getchar();
         getchar();
         return 4;
+    case 5:
+        rules();
+        printf("\033[1;32m");
+        printf("\n\t\t\tPress Enter to back to menu...\n\t\t\t");
+        getchar();
+        getchar();
+        return 5;
     default:
         printf("\033[1;32m");
         system("cls");
@@ -1896,7 +1904,7 @@ void JS_func(int x, int y)
                         map_printer();
                     }
                     printf("\t\t\t");
-                    temp = odd_x_moves(&x, &y, 0, init_x, init_y);
+                    temp = odd_x_moves(&x, &y, 7, init_x, init_y);
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
@@ -1918,7 +1926,7 @@ void JS_func(int x, int y)
                         map_printer();
                     }
                     printf("\t\t\t");
-                    temp = even_x_moves(&x, &y, 0, init_x, init_y);
+                    temp = even_x_moves(&x, &y, 7, init_x, init_y);
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
@@ -1988,7 +1996,7 @@ void JS_func(int x, int y)
                         map_printer();
                     }
                     printf("\t\t\t");
-                    temp = odd_x_moves(&x, &y, 0, init_x, init_y);
+                    temp = odd_x_moves(&x, &y, 7, init_x, init_y);
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
@@ -2010,7 +2018,7 @@ void JS_func(int x, int y)
                         map_printer();
                     }
                     printf("\t\t\t");
-                    temp = even_x_moves(&x, &y, 0, init_x, init_y);
+                    temp = even_x_moves(&x, &y, 7, init_x, init_y);
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
@@ -2042,6 +2050,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     int x = *x_, y = *y_;
     if (y != 8 && (init_x != x || init_y != y + 1))
     {
+        int flag = 0;
         switch (map[x][y + 1].place_type)
         {
         case normal:
@@ -2052,6 +2061,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("1. North  ");
                 array[counter] = 1;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2060,20 +2070,20 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("11. go north and arrest him/her   ");
                     array[counter] = 11;
                     counter++;
+                    flag = 1;
                 }
             }
         case open_gate:
-            if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || (!(round_counter % 2) && (turn_counter == 1 || turn_counter == 4))) && passed == MrJack)
+            if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || (!(round_counter % 2) && (turn_counter == 1 || turn_counter == 4))) && (passed == MrJack || (MrJack == 6 && passed == 100)) && flag == 0)
             {
-                printf("20. run away!  ");
+                printf("20. Run away!  ");
                 array[counter] = 20;
                 counter++;
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("1. North  ");
                 array[counter] = 1;
@@ -2083,6 +2093,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (y != 0 && (init_x != x || init_y != y - 1))
     {
+        int flag = 0;
         switch (map[x][y - 1].place_type)
         {
         case normal:
@@ -2093,6 +2104,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("2. South  ");
                 array[counter] = 2;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2101,21 +2113,20 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("12. go south and arrest him/her   ");
                     array[counter] = 12;
                     counter++;
+                    flag = 1;
                 }
             }
         case open_gate:
-            if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || (!(round_counter % 2) && (turn_counter == 1 || turn_counter == 4))) && passed == MrJack)
+            if (!visible_condition && (((round_counter % 2) && (turn_counter == 2 || turn_counter == 3)) || ((round_counter % 2 == 0) && (turn_counter == 1 || turn_counter == 4))) && (passed == MrJack || (MrJack == 6 && passed == 100)) && flag == 0)
             {
-                printf("x = %d y = %d\n", x, y); ///////
                 printf("20. run away!  ");
                 array[counter] = 20;
                 counter++;
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("2. south   ");
                 array[counter] = 2;
@@ -2125,6 +2136,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 12 && y != 8 && (init_x != x + 1 || init_y != y + 1))
     {
+        int flag = 0;
         switch (map[x + 1][y + 1].place_type)
         {
         case normal:
@@ -2135,6 +2147,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("3.North-East  ");
                 array[counter] = 3;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2143,13 +2156,13 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("13. go north-east and arrest him/her   ");
                     array[counter] = 13;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("3. North-East  ");
                 array[counter] = 3;
@@ -2159,6 +2172,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 12 && (init_x != x + 1 || init_y != y))
     {
+        int flag = 0;
         switch (map[x + 1][y].place_type)
         {
         case normal:
@@ -2169,6 +2183,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("4.South-East  ");
                 array[counter] = 4;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2177,13 +2192,13 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("14. go south-east and arrest him/her   ");
                     array[counter] = 14;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("4. South-East  ");
                 array[counter] = 4;
@@ -2193,6 +2208,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 0 && (init_x != x - 1 || init_y != y))
     {
+        int flag = 0;
         switch (map[x - 1][y].place_type)
         {
         case normal:
@@ -2203,6 +2219,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("5.South-West  ");
                 array[counter] = 5;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2211,13 +2228,13 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("15. go south-west and arrest him/her   ");
                     array[counter] = 15;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("5. South-West  ");
                 array[counter] = 5;
@@ -2227,6 +2244,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 0 && y != 8 && (init_x != x - 1 || init_y != y + 1))
     {
+        int flag = 0;
         switch (map[x - 1][y + 1].place_type)
         {
         case normal:
@@ -2237,6 +2255,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("6.North-West  ");
                 array[counter] = 6;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2245,13 +2264,13 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("16. go north-west and arrest him/her   ");
                     array[counter] = 16;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("6. North-West  ");
                 array[counter] = 6;
@@ -2435,6 +2454,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     int x = *x_, y = *y_;
     if (y != 8 && (init_x != x || init_y != y + 1))
     {
+        int flag = 0;
         switch (map[x][y + 1].place_type)
         { // in this part we just consider place types not neighbor character;
         case normal:
@@ -2445,6 +2465,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("1. North  ");
                 array[counter] = 1;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2453,13 +2474,13 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("11. go north and arrest him/her  ");
                     array[counter] = 11;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("1. North  ");
                 array[counter] = 1;
@@ -2469,6 +2490,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (y != 0 && (init_x != x || init_y != y - 1))
     {
+        int flag = 0;
         switch (map[x][y - 1].place_type)
         {
         case normal:
@@ -2479,6 +2501,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("2. South  ");
                 array[counter] = 2;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2487,13 +2510,13 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("12. go south and arrest him/her   ");
                     array[counter] = 12;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("2. South  ");
                 array[counter] = 2;
@@ -2503,6 +2526,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 12 && (init_x != x + 1 || init_y != y))
     {
+        int flag = 0;
         switch (map[x + 1][y].place_type)
         {
         case normal:
@@ -2513,6 +2537,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("3.North-East  ");
                 array[counter] = 3;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2521,13 +2546,13 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("13. go north-east and arrest him/her   ");
                     array[counter] = 13;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("3. North-East  ");
                 array[counter] = 3;
@@ -2537,6 +2562,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 12 && y != 0 && (init_x != x + 1 || init_y != y - 1))
     {
+        int flag = 0;
         switch (map[x + 1][y - 1].place_type)
         {
         case normal:
@@ -2547,21 +2573,22 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("4.South-East  ");
                 array[counter] = 4;
                 counter++;
+                flag = 1;
             }
             else
             {
                 if (((round_counter % 2) && (turn_counter == 1 || turn_counter == 4)) || (!(round_counter % 2) && (turn_counter == 3 || turn_counter == 2)))
                 {
-                    printf("14. go south-easat and arrest him/her   ");
+                    printf("14. go south-east and arrest him/her   ");
                     array[counter] = 14;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("4. South-East  ");
                 array[counter] = 4;
@@ -2571,6 +2598,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 0 && y != 0 && (init_x != x - 1 || init_y != y - 1))
     {
+        int flag = 0;
         switch (map[x - 1][y - 1].place_type)
         {
         case normal:
@@ -2581,6 +2609,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("5.South-West  ");
                 array[counter] = 5;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2589,13 +2618,13 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("15. go south-west and arrest him/her  ");
                     array[counter] = 15;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("5.South-West  ");
                 array[counter] = 5;
@@ -2605,6 +2634,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     }
     if (x != 0 && (init_x != x - 1 || init_y != y))
     {
+        int flag = 0;
         switch (map[x - 1][y].place_type)
         {
         case normal:
@@ -2615,6 +2645,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                 printf("6.North-West  ");
                 array[counter] = 6;
                 counter++;
+                flag = 1;
             }
             else
             {
@@ -2623,13 +2654,13 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
                     printf("16. go north-west and arrest him/her  ");
                     array[counter] = 16;
                     counter++;
+                    flag = 1;
                 }
             }
-            break;
         case house:
         case light_off:
         case light_on:
-            if (passed == 100)
+            if (passed == 100 && flag == 0)
             {
                 printf("6.North-West  ");
                 array[counter] = 6;
@@ -2986,18 +3017,18 @@ int SG_action1(int number, int x, int y)
     }
     if (x_ % 2) // SG   Character
     {
-        temp = SG_even(x, y, x_, y_);
+        temp = SG_even(x, y, x_, y_, number);
         if(temp == -1)
             return -1;
     }
     else
     {
-        temp = SG_odd(x, y, x_, y_);
+        temp = SG_odd(x, y, x_, y_, number);
         if(temp == -1)
             return -1;
     }
 }
-int SG_even(int x, int y, int x_, int y_)
+int SG_even(int x, int y, int x_, int y_, int num)
 {
     int counter = 0;
     printf("\033[0;32m");
@@ -3093,35 +3124,61 @@ int SG_even(int x, int y, int x_, int y_)
     if (temp == 1)
     {
         make_move(x_, y_, x_, y_ + 1);
+        if(num == 5)
+        {
+            JW_y++;
+        }
         return 1;
     }
     else if (temp == 2)
     {
         make_move(x_, y_, x_, y_ - 1);
+        if(num == 5)
+        {
+            JW_y--;
+        }
         return 1;
     }
     else if (temp == 3)
     {
         make_move(x_, y_, x_ + 1, y_ + 1);
+        if(num == 5)
+        {
+            JW_y++;
+            JW_x++;
+        }
         return 1;
     }
     else if (temp == 4)
     {
         make_move(x_, y_, x_ + 1, y_);
+        if(num == 5)
+        {
+            JW_x++;
+        }
         return 1;
     }
     else if (temp == 5)
     {
         make_move(x_, y_, x_ - 1, y_);
+        if(num == 5)
+        {
+            JW_x--;
+        }
         return 1;
     }
     else
     {
         make_move(x_, y_, x_ - 1, y_ + 1);
+        if(num == 5)
+        {
+            JW_y++;
+            JW_x--;
+        }
         return 1;
     }
 }
-int SG_odd(int x, int y, int x_, int y_)
+int SG_odd(int x, int y, int x_, int y_, int num)
 {
     int counter = 0;
     printf("\033[0;32m");
@@ -3217,38 +3274,64 @@ int SG_odd(int x, int y, int x_, int y_)
     if (temp == 1)
     {
         make_move(x_, y_, x_, y_ + 1);
+        if(num == 5)
+        {
+            JW_y++;
+        }
         return 1;
     }
     else if (temp == 2)
     {
         make_move(x_, y_, x_, y_ - 1);
+        if(num == 5)
+        {
+            JW_y--;
+        }
         return 1;
     }
     else if (temp == 3)
     {
         make_move(x_, y_, x_ + 1, y_);
+        if(num == 5)
+        {
+            JW_x++;
+        }
         return 1;
     }
     else if (temp == 4)
     {
         make_move(x_, y_, x_ + 1, y_ - 1);
+        if(num == 5)
+        {
+            JW_y--;
+            JW_x++;
+        }
         return 1;
     }
     else if (temp == 5)
     {
         make_move(x_, y_, x_ - 1, y_ - 1);
+        if(num == 5)
+        {
+            JW_y--;
+            JW_x--;
+        }
         return 1;
     }
     else
     {
         make_move(x_, y_, x_ - 1, y_);
+        if(num == 5)
+        {
+            JW_x--;
+        }
         return 1;
     }
 }
 void JW_action()
 {
     printf("\033[0;32m");
-    printf("\t\t\tWhich direction would you like the lantern to be?\n\t\t\t");
+    printf("\t\t\tWhich direction would you like to set lanstern's light?\n\t\t\t");
     printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n\t\t\t");
     scanf("%d", &lantern_dir);
     map_printer();
@@ -4374,8 +4457,11 @@ int load()
     fread(&map, sizeof(map), 1, fp);
     fclose(fp);
     system("cls");
+    printf("\033[0;32m");
     printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tThe game is loaded\n\t\t\t\t\t\t\t\t\t\t\t");
-    printf("Press Enter to start the game...\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("Mr.Jack was ");
+    MrJack_card_show(MrJack);
+    printf("\t\t\t\t\t\t\t\t\t\t\tPress Enter to continue the game...\n\t\t\t\t\t\t\t\t\t\t\t");
     getchar();
     getchar();
     return round_counter;
@@ -4389,5 +4475,13 @@ int menu_q()
     scanf("%d", &choice);
     if(choice == 2)
         return 2;
+}
+void rules()
+{
+    system("cls");
+    printf("\033[1;32m");
+    printf("\n\n\n\n\n\n\t\t\tIn Mr Jack, two players take the roles of Jack the Ripper & a detective attempting to track him down");
+    printf("\n\t\t\tOver 8 rounds, the various characters are moved around & their special abilities are played.");
+    printf("\n\t\t\tEach round Jack announces whether he is seen or unseen & the detective tries to use this information to deduce which character is Jack.");
 }
 // by Parham Roufarshbaf
