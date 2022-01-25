@@ -170,6 +170,7 @@ int even_round()
     if (round_counter == 1)
     {
         randomCard_maker_2();
+        sleep(1);
         Mr_jack_CardPicker();
         system("cls");
         printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\tPress Enter to show Mr.Jack's card...\n");
@@ -592,8 +593,8 @@ int menu()
 {
     printf("\033[1;32m");
     int choice, temp;
-    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t2.Save\n\t\t\t\t\t\t\t\t\t\t\t3.Load\n\t\t\t\t\t\t\t\t\t\t\t4.Info\n\t\t\t\t\t\t\t\t\t\t\t5.about game\n\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
-    printf("\t\t\t\t\t\t\t\t\t\t\tEnter your choice:\n\t\t\t\t\t\t\t\t\t\t\t");
+    printf("\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t\t1.New game\n\t\t\t\t\t\t\t\t\t\t\t\t2.Save\n\t\t\t\t\t\t\t\t\t\t\t\t3.Load\n\t\t\t\t\t\t\t\t\t\t\t\t4.Info\n\t\t\t\t\t\t\t\t\t\t\t\t5.about game\n\t\t\t\t\t\t\t\t\t\t\t\t0.Exit\n");
+    printf("\t\t\t\t\t\t\t\t\t\t\t\tEnter your choice:\n\t\t\t\t\t\t\t\t\t\t\t\t");
     scanf("%d", &choice);
     switch (choice)
     {
