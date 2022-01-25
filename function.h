@@ -1349,18 +1349,28 @@ void IL_func(int x, int y)
             continue;
         }
     }
-    printf("\033[0;32m");
-    printf("\t\t\twhich gate do you want to open?\n\t\t\t");
-    show_close_gates();
-    printf("Enter coordinates: ");
-    scanf("%d %d", &x_, &y_);
-    map_printer();
-    printf("\033[0;32m");
-    printf("\t\t\tWhich gate do you want to close?\n\t\t\t");
-    show_open_gates();
-    printf("Enter coordinates: ");
-    scanf("%d %d", &x__, &y__);
-    swap_gates(x_, y_, x__, y__);
+    u = 0;
+    do
+    {
+        if (u > 0)
+        {
+            invalid_func();
+            map_printer();
+        }
+        printf("\033[0;32m");
+        printf("\t\t\twhich gate do you want to open?\n\t\t\t");
+        show_close_gates();
+        printf("Enter coordinates: ");
+        scanf("%d %d", &x_, &y_);
+        map_printer();
+        printf("\033[0;32m");
+        printf("\t\t\tWhich gate do you want to close?\n\t\t\t");
+        show_open_gates();
+        printf("Enter coordinates: ");
+        scanf("%d %d", &x__, &y__);
+        temp = swap_gates(x_, y_, x__, y__);
+        u++;
+    } while(temp == -1);
     return;
 }
 void WG_func(int x, int y)
@@ -1451,14 +1461,24 @@ void WG_func(int x, int y)
     }
     else
     {
-        int tmp;
-        printf("\033[0;32m");
-        printf("\t\t\twhich character do you want to change your hex with?!\n");
-        WG_character_choice(2);
-        printf("\t\t\t");
-        scanf("%d", &tmp);
-        WG_character_change(x, y, tmp);
-        return;
+        u = 0;
+        do
+        {
+            if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
+            int tmp;
+            printf("\033[0;32m");
+            printf("\t\t\twhich character do you want to change your hex with?!\n");
+            WG_character_choice(2);
+            printf("\t\t\t");
+            scanf("%d", &tmp);
+            temp = WG_character_change(x, y, tmp);
+            u++;
+            } while(temp == -1);
+    return;
     }
 }
 void SH_func(int x, int y)
@@ -1615,34 +1635,54 @@ void JB_func(int x, int y)
                 continue;
             }
         }
-        printf("\033[0;32m");
-        printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
-        show_close_manholes();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x_, &y_);
-        map_printer();
-        printf("\033[0;32m");
-        printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
-        show_open_manholes();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x__, &y__);
-        swap_manholes(x_, y_, x__, y__);
+        u = 0;
+        do
+        {
+            if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
+            printf("\033[0;32m");
+            printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
+            show_close_manholes();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x_, &y_);
+            map_printer();
+            printf("\033[0;32m");
+            printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
+            show_open_manholes();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x__, &y__);
+            temp = swap_manholes(x_, y_, x__, y__);
+            u++;
+        } while(temp == -1);
         return;
     }
     else
     {
-        printf("\033[0;32m");
-        printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
-        show_close_manholes();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x_, &y_);
-        map_printer();
-        printf("\033[0;32m");
-        printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
-        show_open_manholes();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x__, &y__);
-        swap_manholes(x_, y_, x__, y__);
+        u = 0;
+        do
+        {
+            if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
+            printf("\033[0;32m");
+            printf("\t\t\twhich manhole do you want to open?\n\t\t\t");
+            show_close_manholes();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x_, &y_);
+            map_printer();
+            printf("\033[0;32m");
+            printf("\t\t\tWhich manhole do you want to close?\n\t\t\t");
+            show_open_manholes();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x__, &y__);
+            temp = swap_manholes(x_, y_, x__, y__);
+            u++;
+        } while(temp == -1);
         map_printer();
         printf("\033[0;32m");
         u = 0;
@@ -1938,22 +1978,40 @@ void JS_func(int x, int y)
                 continue;
             }
         }
-        printf("\033[0;32m");
-        printf("\t\t\twhich light do you want to turn on?\n\t\t\t");
-        show_off_lights();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x_, &y_);
-        map_printer();
-        printf("\033[0;32m");
-        printf("\t\t\tWhich light do you want to turn off?\n\t\t\t");
-        show_on_lights();
-        printf("Enter coordinates: ");
-        scanf("%d %d", &x__, &y__);
-        swap_lights(x_, y_, x__, y__);
+        u = 0;
+        do
+        {
+            if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
+            printf("\033[0;32m");
+            printf("\t\t\twhich light do you want to turn on?\n\t\t\t");
+            show_off_lights();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x_, &y_);
+            map_printer();
+            printf("\033[0;32m");
+            printf("\t\t\tWhich light do you want to turn off?\n\t\t\t");
+            show_on_lights();
+            printf("Enter coordinates: ");
+            scanf("%d %d", &x__, &y__);
+            temp = swap_lights(x_, y_, x__, y__);
+            u++;
+        } while (temp == -1);
         return;
     }
     else
     {
+        u = 0;
+        do
+        {
+            if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
         printf("\033[0;32m");
         printf("\t\t\twhich light do you want to turn on?\n\t\t\t");
         show_off_lights();
@@ -1965,7 +2023,9 @@ void JS_func(int x, int y)
         show_on_lights();
         printf("Enter coordinates: ");
         scanf("%d %d", &x__, &y__);
-        swap_lights(x_, y_, x__, y__);
+        temp = swap_lights(x_, y_, x__, y__);
+        u++;
+        } while(temp == -1);
         map_printer();
         printf("\033[0;32m");
         u = 0;
@@ -2853,10 +2913,13 @@ void show_open_manholes()
         }
     }
 }
-void swap_manholes(int x_, int y_, int x__, int y__)
+int swap_manholes(int x_, int y_, int x__, int y__)
 {
+    if(map[x_][y_].place_type != close || map[x__][y__].place_type != open)
+        return -1;
     map[x_][y_].place_type = open;
     map[x__][y__].place_type = close;
+    return 0;
 }
 void manhole_move()
 {
@@ -2895,10 +2958,13 @@ void show_on_lights()
         }
     }
 }
-void swap_lights(int x_, int y_, int x__, int y__)
+int swap_lights(int x_, int y_, int x__, int y__)
 {
+    if(map[x_][y_].place_type != light_off || map[x__][y__].place_type != light_on)
+        return -1;
     map[x_][y_].place_type = light_on;
     map[x__][y__].place_type = light_off;
+    return 0;
 }
 void show_open_gates()
 {
@@ -2924,10 +2990,13 @@ void show_close_gates()
         }
     }
 }
-void swap_gates(int x_, int y_, int x__, int y__)
+int swap_gates(int x_, int y_, int x__, int y__)
 {
+    if(map[x_][y_].place_type != close_gate || map[x__][y__].place_type != open_gate)
+        return -1;
     map[x_][y_].place_type = open_gate;
     map[x__][y__].place_type = close_gate;
+    return 0;
 }
 void WG_character_choice(int number)
 {
@@ -2940,27 +3009,37 @@ void WG_character_choice(int number)
         }
     }
 }
-void WG_character_change(int x, int y, int number)
+int WG_character_change(int x, int y, int number)
 {
-    int x_, y_;
+    int x_, y_, flag = 0;
     for (int i = 0; i < 13; i++)
     {
+        int flag2 = 0;
         for (int j = 0; j < 9; j++)
         {
             if (map[i][j].character == number || map[i][j].character == number + 20)
             {
                 x_ = i;
                 y_ = j;
-                swap_characters(x, y, x_, y_);
-                if (number == JW || number == JW2)
-                {
-                    JW_x = x;
-                    JW_y = y;
-                }
-                return;
+                flag = 1;
+                flag2 = 1;
+                break;
             }
         }
+        if(flag2 == 1)
+            break;
     }
+    if(flag == 0)
+    {
+        return -1;
+    }
+    swap_characters(x, y, x_, y_);
+    if (number == JW || number == JW2)
+        {
+            JW_x = x;
+            JW_y = y;
+        }
+    return 0;
 }
 void swap_characters(int x, int y, int x_, int y_)
 {
@@ -3330,11 +3409,21 @@ int SG_odd(int x, int y, int x_, int y_, int num)
 }
 void JW_action()
 {
-    printf("\033[0;32m");
-    printf("\t\t\tWhich direction would you like to set lanstern's light?\n\t\t\t");
-    printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n\t\t\t");
-    scanf("%d", &lantern_dir);
-    map_printer();
+    int u = 0;
+    do
+    {
+        if (u > 0)
+            {
+                invalid_func();
+                map_printer();
+            }
+        printf("\033[0;32m");
+        printf("\t\t\tWhich direction would you like to set lanstern's light?\n\t\t\t");
+        printf("0. North  1. North-East  2. South-East  3. South  4. South-West  5. North_west\n\t\t\t");
+        scanf("%d", &lantern_dir);
+        map_printer();
+        u++;
+    } while(lantern_dir != 0 && lantern_dir != 1 && lantern_dir != 2 && lantern_dir != 3 && lantern_dir != 4 && lantern_dir != 5);
     return;
 }
 void visible()
@@ -4480,7 +4569,7 @@ void rules()
 {
     system("cls");
     printf("\033[1;32m");
-    printf("\n\n\n\n\n\n\t\t\tIn Mr Jack, two players take the roles of Jack the Ripper & a detective attempting to track him down");
+    printf("\n\n\n\n\n\n\t\t\tIn Mr Jack, two players take the roles of Jack the Ripper & a detective attempting to track him down.");
     printf("\n\t\t\tOver 8 rounds, the various characters are moved around & their special abilities are played.");
     printf("\n\t\t\tEach round Jack announces whether he is seen or unseen & the detective tries to use this information to deduce which character is Jack.");
 }
