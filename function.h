@@ -620,8 +620,22 @@ int menu()
         printf("temp is %d\n", temp);
         switch(temp)
         {
+            case 2:
+                multiplay(2);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
             case 3:
                 multiplay(3);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
+            case 4:
+                multiplay(4);
                 printf("\033[1;32m");
                 printf("\n\t\t\tPress Enter to back to menu...\n");
                 getchar();
@@ -634,8 +648,22 @@ int menu()
                 getchar();
                 getchar();
                 return 3;
+            case 6:
+                multiplay(6);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
             case 7:
                 multiplay(7);
+                printf("\033[1;32m");
+                printf("\n\t\t\tPress Enter to back to menu...\n");
+                getchar();
+                getchar();
+                return 3;
+            case 8:
+                multiplay(8);
                 printf("\033[1;32m");
                 printf("\n\t\t\tPress Enter to back to menu...\n");
                 getchar();
@@ -682,6 +710,7 @@ int multiplay(int number)
         if (i == 0 && number == 1)
         {
             prepare_game();
+            number = -1;
         }
         else
         {
@@ -703,6 +732,8 @@ int multiplay(int number)
                 continue;
             }
         }
+        if(number % 2 == -1)
+        {
         result = even_round();
         if (result == 1)
         {
@@ -711,12 +742,22 @@ int multiplay(int number)
             return 1;
         }
         round_counter++;
+        int tmp = menu_q();
+            if(tmp == 2)
+            {
+                return 2;
+            }
+        }
+        if(number % 2 == -1 || number % 2 == 0)
+        {
         result = odd_round();
+        number = -1;
         if (result == 1)
         {
             printf("\033[1;32m");
             printf("\t\t\tThe game is over!\n");
             return 1; // the game is over;
+        }
         }
         if (i != 3)
         {
@@ -4471,10 +4512,21 @@ void save()
         printf("\n\t\t\t\t\t\t\t\t\t\t\tCan't save the file!\n");
         return;
     }
+    fwrite(&round_counter, sizeof(int), 1, fp);
+    if(!(round_counter % 2))
+    {
+        card *tmp = odd_round_head, *node;
+        for(int i = 0; i < 4; i++)
+        {
+            fwrite(&tmp->name, sizeof(int), 1, fp);
+            node = tmp;
+            tmp = tmp->next;
+            free(node);
+        }   
+    }
     fwrite(&MrJack, sizeof(int), 1, fp);
     fwrite(&visible_condition, sizeof(int), 1, fp);
     fwrite(&game_over, sizeof(int), 1, fp);
-    fwrite(&round_counter, sizeof(int), 1, fp);
     fwrite(&JW_x, sizeof(int), 1, fp);
     fwrite(&JW_y, sizeof(int), 1, fp);
     card *tmp = second_head;
@@ -4520,10 +4572,29 @@ int load()
         printf("\n\t\t\t\t\t\t\t\t\t\t\tCan't save the file!\n");
         return 0;
     }
+    fread(&round_counter, sizeof(int), 1, fp);
+    if(!(round_counter % 2))
+    {
+        card *tmp, *new_node;
+        for(int i = 0; i < 4; i++)
+        {
+        new_node = (card *) malloc(sizeof(card));
+        fread(&new_node->name, sizeof(int), 1, fp);
+        new_node->next = NULL;
+        if(odd_round_head == NULL)
+        {
+            odd_round_head = tmp = new_node;
+        }
+        else
+        {
+            tmp->next = new_node;
+            tmp = new_node;
+        }
+        }   
+    }
     fread(&MrJack, sizeof(int), 1, fp);
     fread(&visible_condition, sizeof(int), 1, fp);
     fread(&game_over, sizeof(int), 1, fp);
-    fread(&round_counter, sizeof(int), 1, fp);
     fread(&JW_x, sizeof(int), 1, fp);
     fread(&JW_y, sizeof(int), 1, fp);
     fread(&counter, sizeof(int), 1, fp);
@@ -4532,7 +4603,6 @@ int load()
         card *tmp, *new_node;
         new_node = (card *) malloc(sizeof(card));
         fread(&new_node -> name, sizeof(int), 1, fp);
-        printf(" i = %d name = %d\n", i, new_node -> name);
         new_node -> next = NULL;
         if(second_head == NULL)
         {
