@@ -79,7 +79,7 @@ void even_card_printer()
     {
         character_info_printer(temp->name);
         temp = temp->next;
-        printf("\t\t\t* * * * *\n");
+        printf("\t\t\t* * * * * * *\n");
     }
 }
 void odd_card_printer()
@@ -89,7 +89,7 @@ void odd_card_printer()
     {
         character_info_printer(temp->name);
         temp = temp->next;
-        printf("\t\t\t* * * * *\n");
+        printf("\t\t\t* * * * * * *\n");
     }
 }
 int odd_round()
@@ -101,7 +101,7 @@ int odd_round()
         round_printer();
         map_printer();
         odd_card_printer();
-        printf("\t\t\tMr Jack! what card do you choose?!\n\t\t\t");
+        printf("\t\t\tMr.Jack! what card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 3, &odd_round_head);
@@ -118,7 +118,7 @@ int odd_round()
         round_printer();
         map_printer();
         odd_card_printer();
-        printf("\t\t\tInspecteur! What card do you choose?!\n\t\t\t");
+        printf("\t\t\tDetective! What card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 2, &odd_round_head);
@@ -135,7 +135,7 @@ int odd_round()
         round_printer();
         map_printer();
         odd_card_printer();
-        printf("\t\t\tInspecteur! What card do you choose?!\n\t\t\t");
+        printf("\t\t\tDetective! What card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 1, &odd_round_head);
@@ -152,7 +152,7 @@ int odd_round()
         round_printer();
         map_printer();
         odd_card_printer();
-        printf("\t\t\tMrJack! what card do you choose?!\n\t\t\t");
+        printf("\t\t\tMr.Jack! what card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 0, &odd_round_head);
@@ -187,7 +187,7 @@ int even_round()
         round_printer();
         map_printer();
         even_card_printer();
-        printf("\t\t\tinspecteur! what card do you choose?!\n\t\t\t");
+        printf("\t\t\tDetective! what card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 3, &even_round_head);
@@ -238,7 +238,7 @@ int even_round()
         round_printer();
         map_printer();
         even_card_printer();
-        printf("\t\t\tinspecteur! what card do you choose?!\n\t\t\t");
+        printf("\t\t\tDetective! what card do you choose?!\n\t\t\t");
         scanf("%d", &choose);
         map_printer();
         tmp = card_delete(choose, 0, &even_round_head);
@@ -673,14 +673,14 @@ int menu()
     case 4:
         info();
         printf("\033[1;32m");
-        printf("\n\t\t\t\t\t\t\t\t\t\t\tPress Enter to back to menu...\n\t\t\t\t\t\t\t\t\t\t\t");
+        printf("\n\n\t\t\t\t\t\t\t\t\t\t\tPress Enter to back to menu...\n\t\t\t\t\t\t\t\t\t\t\t");
         getchar();
         getchar();
         return 4;
     case 5:
         rules();
         printf("\033[1;32m");
-        printf("\n\t\t\tPress Enter to back to menu...\n\t\t\t");
+        printf("\n\n\t\t\tPress Enter to back to menu...\n\t\t\t");
         getchar();
         getchar();
         return 5;
@@ -878,7 +878,7 @@ void even_round_linkedlist_creat(card *temp)
     }
 }
 void initial_linkedlist()
-{ // contains linked list with eight
+{ // contains linked list with eight cards;
     card *temp, *next_node;
     int i = 0;
     while (i != 8)
@@ -1071,7 +1071,7 @@ void MrJack_card_show(int number)
         printf("SERGENT GOODLEY (SG)\n");
         break;
     case 1:
-        printf("INSPECTEUR LESTRADE (IL)\n");
+        printf("Inspecteur LESTRADE (IL)\n");
         break;
     case 2:
         printf("SIR WILLIAM GULL (WG)\n");
@@ -1094,7 +1094,7 @@ void MrJack_card_show(int number)
     }
 }
 void SG_func(int x, int y)
-{ // there is a bug here. if he can't make a character closer?
+{ 
     printf("\033[0;32m");
     int choice, temp, action_time, u = 0, z = 0, res;
     do
@@ -1146,7 +1146,7 @@ void SG_func(int x, int y)
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
-                { // inspuecteur arrested somebody or MrJack ran away
+                { // Detective arrested somebody or MrJack ran away
                     game_over = 1;
                     return;
                 }
@@ -1361,7 +1361,7 @@ void IL_func(int x, int y)
                 u++;
             } while (temp == -2);
             if (temp == 1 || temp == -1 || temp == 2)
-            { // inspuecteur arrested somebody or MrJack ran away
+            { // Detective arrested somebody or MrJack ran away
                 game_over = 1;
                 return;
             }
@@ -1416,7 +1416,7 @@ void IL_func(int x, int y)
     return;
 }
 void WG_func(int x, int y)
-{ //printf("\t\t\tYou want to   1. do your action   or    2. move?!\n\t\t\t");
+{
     int init_x = x, init_y = y;
     printf("\033[0;32m");
     int choice, temp, action_time, u = 0;
@@ -1467,7 +1467,7 @@ void WG_func(int x, int y)
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
-                { // inspuecteur arrested somebody or MrJack ran away
+                { // Detective arrested somebody or MrJack ran away
                     game_over = 1;
                     return;
                 }
@@ -1561,7 +1561,7 @@ void SH_func(int x, int y)
                 u++;
             } while (temp == -2);
             if (temp == 1 || temp == -1 || temp == 2)
-            { // inspuecteur arrested somebody or MrJack ran away
+            { // Detective arrested somebody or MrJack ran away
                 game_over = 1;
                 return;
             }
@@ -1647,7 +1647,7 @@ void JB_func(int x, int y)
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
-                { // inspuecteur arrested somebody or MrJack ran away
+                { // Detective arrested somebody or MrJack ran away
                     game_over = 1;
                     return;
                 }
@@ -1830,7 +1830,7 @@ void JW_func(int x, int y)
                 u++;
             } while (temp == -2);
             if (temp == 1 || temp == -1 || temp == 2)
-            { // inspuecteur arrested somebody or MrJack ran away
+            { // Detective arrested somebody or MrJack ran away
                 game_over = 1;
                 return;
             }
@@ -1904,7 +1904,7 @@ void MS_func(int x, int y)
                 u++;
             } while (temp == -2);
             if (temp == 1 || temp == -1 || temp == 2)
-            { // inspuecteur arrested somebody or MrJack ran away
+            { // Detective arrested somebody or MrJack ran away
                 game_over = 1;
                 return;
             }
@@ -1990,7 +1990,7 @@ void JS_func(int x, int y)
                     u++;
                 } while (temp == -2);
                 if (temp == 1 || temp == -1 || temp == 2)
-                { // inspuecteur arrested somebody or MrJack ran away
+                { // Detective arrested somebody or MrJack ran away
                     game_over = 1;
                     return;
                 }
@@ -2167,7 +2167,7 @@ int even_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
             }
             else
             {
-                if (((round_counter % 2) && (turn_counter == 1 || turn_counter == 4)) || (!(round_counter % 2) && (turn_counter == 3 || turn_counter == 2))) // if it's inspecteur turn
+                if (((round_counter % 2) && (turn_counter == 1 || turn_counter == 4)) || (!(round_counter % 2) && (turn_counter == 3 || turn_counter == 2))) // if it's Detective turn
                 {
                     printf("11. go north and arrest him/her   ");
                     array[counter] = 11;
@@ -2558,7 +2558,7 @@ int odd_x_moves(int *x_, int *y_, int passed, int init_x, int init_y)
     {
         int flag = 0;
         switch (map[x][y + 1].place_type)
-        { // in this part we just consider place types not neighbor character;
+        { 
         case normal:
         case open:
         case close:
@@ -3241,6 +3241,7 @@ int SG_even(int x, int y, int x_, int y_, int num)
     if(counter == 0)
         return -1;
     int temp;
+    printf("\n\t\t\t");
     scanf("%d", &temp);
     if (temp == 1)
     {
@@ -3391,6 +3392,7 @@ int SG_odd(int x, int y, int x_, int y_, int num)
     if(counter == 0)
         return -1;
     int temp;
+    printf("\n\t\t\t");
     scanf("%d", &temp);
     if (temp == 1)
     {
