@@ -55,3 +55,8 @@ void JW_action();
 void visible();
 void visible2();
 void invalid_func();
+void SG_error();
+void save();
+int load();
+int menu_q();
+void rules();
