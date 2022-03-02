@@ -1,3 +1,3 @@
 Mr.Jack by C language
 
-Fundamentals Of Programming Finale Project
+Fundamentals Of Programming Final Project
